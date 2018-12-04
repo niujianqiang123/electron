@@ -3,46 +3,44 @@
  *
  */
 "use strict";
+//base
+const {app, BrowserWindow, BrowserView} = require("electron");
 
-const {app, BrowserWindow,BrowserView} = require("electron");
-let win = null;
-const createWin = () => {
-    win = new BrowserWindow({width: 800, height: 600});
+//modules
+const HomeWindow = require('./views/home/home');
 
+// todo : export default  class Main {
+class Main {
+    constructor(params) {
+        //主窗口实例
+        this.appWin = null;
 
-    let child = new BrowserWindow({
-        titleBarStyle: "hidden",
-        frame: false,
-        parent: win,
-        y: 100,
-        x: 0,
-        width: 80,
-        height: 60
-    });
-    child.loadFile('./index.html');
-    child.show();
+    }
 
-    win.loadFile('./index.html');
+    //todo : init=()=> {
+    init() {
+        this.initApp();
+    }
 
 
-    let view = new BrowserView({
-        webPreferences: {
-            nodeIntegration: false
-        }
-    })
-    win.setBrowserView(view)
-    view.setBounds({ x: 0, y: 0, width: 300, height: 300 })
-    view.webContents.loadURL('https://electronjs.org')
+    initApp() {
+        app.on('ready', () => {
+            this.newMainWindow();
+        });
+        //mac os 当应用被激活时发出。 各种操作都可以触发此事件, 例如首次启动应用程序、尝试在应用程序已运行时或单击应用程序的坞站或任务栏图标时重新激活它。
+        app.on('activate', () => {
+            if (this.appWin == null) {
+                this.newMainWindow();
+            } else {
+                this.appWin.show();
+            }
+        });
+    }
 
-    // 当 window 被关闭，这个事件会被触发。
-    win.on('closed', () => {
-        // 取消引用 window 对象，如果你的应用支持多窗口的话，
-        // 通常会把多个 window 对象存放在一个数组里面，
-        // 与此同时，你应该删除相应的元素。
-        win = null
-    })
-
+    newMainWindow() {
+        this.appWin = new HomeWindow();
+    }
 }
 
-
-app.on('ready', createWin);
+//实例运行！
+new Main().init();
