@@ -1,26 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>index created by xiaogang on 2018/11/27</title>
-    <style type="text/css">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>index created by xiaogang on 2018/11/27</title>
+  <style type="text/css">
 
-    </style>
+  </style>
 </head>
 <body>
-<h1>Hello World!</h1>
-We are using node
-<script>document.write(process.versions.node)</script>
-,
-Chrome
-<script>document.write(process.versions.chrome)</script>
-,
-platform
-<script>document.write(process.platform)</script>
-,
-and Electron
-<script>document.write(process.versions.electron)</script>
-.
+<webview id="browser" src="https://github.com">
+  <h1>Hello World!</h1>
+  We are using node
+  <script>document.write(process.versions.node)</script>
+  ,
+  Chrome
+  <script>document.write(process.versions.chrome)</script>
+  ,
+  platform
+  <script>document.write(process.platform)</script>
+  ,
+  and Electron
+  <script>document.write(process.versions.electron)</script>
+  .
+</webview>
+
+<webview class="devTools" id="devTools"></webview>
 </body>
+<script>
+  const browserView = document.getElementById('browser')
+  const devtoolsView = document.getElementById('devTools')
+  browserView.addEventListener('dom-ready', () => {
+    const browser = browserView.getWebContents()
+    browser.setDevToolsWebContents(devtoolsView.getWebContents())
+    browser.openDevTools()
+  })
+</script>
 </html>

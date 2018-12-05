@@ -21,7 +21,7 @@ class Home {
     this.isShow = false;
     this.homeWin = null;
     this.renderView = null;
-    this.renderUrl = 'https://electronjs.org';
+    this.renderUrl = '';//https://electronjs.org
 
     this.createWindow();
 
@@ -55,7 +55,7 @@ class Home {
 
   createRenderView() {
     this.renderView = new RenderWindow(this.renderUrl);
-    this.renderView.win.setBounds({x: 10, y: 50, width: 300, height: 300});
+    this.renderView.win.setBounds({x: 10, y: 50, width: 800, height: 600});
     this.homeWin.setBrowserView(this.renderView.win);
 
     if (!this.renderView.isShow) {
