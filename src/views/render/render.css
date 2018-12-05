@@ -1,0 +1,16 @@
+/**
+ * Created by xiaogang on 2018/12/4.
+ *
+ */
+.page-render .header {
+  margin: 30px 0;
+  font-weight: 400;
+  text-align: center;
+  color: #404040;
+  line-height: 36px;
+}
+.page-render .content {
+  font-size: 13px;
+  line-height: 18px;
+  color: #737373;
+}
