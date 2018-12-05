@@ -5,16 +5,19 @@
 "use strict";
 
 //base
+const path = require('path');
 const {app, ipcMain, BrowserWindow} = require('electron');
 
 //modules
 const {common} = require('../../config/index');
 
 //pages
-const PageUrl = './home.html';
+// const PageUrl = 'https://wx.qq.com/?lang=zh_CN';
+const PageFile = `${path.join(__dirname, './home.html')}`; // 默认相对于根目录
 
 class Home {
     constructor(params) {
+        this.isShow = false;
         this.homeWin = null;
 
         this.createWindow();
@@ -34,8 +37,15 @@ class Home {
             height: common.window_size.height,
         });
 
-        this.homeWin.loadURL(PageUrl);
+        // this.homeWin.loadURL(PageUrl);
+        this.homeWin.loadFile(PageFile);
         this.homeWin.webContents.openDevTools()
+    }
+
+    show() {
+        this.homeWin.show();
+        this.homeWin.focus();
+        this.isShow = true;
     }
 }
 
