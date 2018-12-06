@@ -28,6 +28,7 @@ renderView.addEventListener('dom-ready', () => {
 /**
  * todo:一片空白
  * https://github.com/electron/electron/pull/11300
+ * https://github.com/electron/electron/issues/15874
  */
 function renderDevTools() {
   let renderViewWebContents = null;
