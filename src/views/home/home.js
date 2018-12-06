@@ -1,12 +1,12 @@
 /**
  * Created by xiaogang on 2018/12/3.
- *
+ * 主线程
  */
 "use strict";
 
 //base
 const path = require('path');
-const {app, ipcMain, BrowserWindow, BrowserView} = require('electron');
+const {app, ipcMain, BrowserWindow, BrowserView, dialog} = require('electron');
 
 //modules
 const {common} = require('../../config/index');
@@ -15,6 +15,7 @@ const RenderWindow = require('../render/render');
 //pages
 // const PageUrl = 'https://wx.qq.com/?lang=zh_CN';
 const PageUrl = `file://${path.join(__dirname, './home.html')}`; // 默认相对于根目录
+// const PageUrl = `file://${path.join(__dirname, '../render/render.html')}`; // 默认相对于根目录
 
 class Home {
   constructor(params) {
@@ -24,7 +25,7 @@ class Home {
     this.renderUrl = '';//https://electronjs.org
 
     this.createWindow();
-
+    this.renderEvents();
   }
 
   createWindow() {
@@ -49,8 +50,8 @@ class Home {
 
     this.createRenderView();
 
-    this.homeWin.webContents.openDevTools();
-
+    //openDevTools
+    // this.homeWin.openDevTools();
 
   }
 
@@ -62,6 +63,18 @@ class Home {
     if (!this.renderView.isShow) {
       this.renderView.show();
     }
+  }
+
+
+  renderEvents() {
+    ipcMain.on('toggle-home-devTools', (event, arg) => {
+      if (this.homeWin.webContents.isDevToolsOpened()) {
+        this.homeWin.closeDevTools();
+      } else {
+        this.homeWin.openDevTools();
+      }
+
+    })
   }
 
   show() {
