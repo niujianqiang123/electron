@@ -62,7 +62,14 @@ gulp.task('views_less_to_css', ['views_css_clean'], function () {
     .pipe(gulp.dest(ViewsFolder));
 });
 
+gulp.task("less-watch", [], function () {
+  gulp.watch([`${ViewsFolder}/**/**.less`], ['views_less_to_css'], function (event) {
 
+  });
+  gulp.watch([`${CommonFolder}/**/**.less`], ['common_less_to_css'], function (event) {
+
+  });
+});
 
 //
 gulp.task("default", ['views_css_clean', 'common_less_to_css', 'views_less_to_css'], function () {
