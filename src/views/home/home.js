@@ -14,7 +14,7 @@ const RenderWindow = require('../render/render');
 
 //pages
 // const PageUrl = 'https://wx.qq.com/?lang=zh_CN';
-const PageFile = `${path.join(__dirname, './home.html')}`; // 默认相对于根目录
+const PageUrl = `file://${path.join(__dirname, './home.html')}`; // 默认相对于根目录
 
 class Home {
   constructor(params) {
@@ -44,11 +44,12 @@ class Home {
       }
     });
 
-    // this.homeWin.loadURL(PageUrl);
-    this.homeWin.loadFile(PageFile);
+    this.homeWin.loadURL(PageUrl);
+    // this.homeWin.loadFile(PageFile);
 
     this.createRenderView();
-    // this.homeWin.webContents.openDevTools();
+
+    this.homeWin.webContents.openDevTools();
 
 
   }

@@ -11,7 +11,7 @@ const {common} = require('../../config/index');
 
 
 //pages
-const PageFile = `${path.join(__dirname, './render.html')}`; // 默认相对于根目录
+const pageUrl = `file://${path.join(__dirname, './render.html')}`; // 默认相对于根目录
 
 
 class Render {
@@ -49,11 +49,8 @@ class Render {
     this.isShow = true;
 
 
-    if (this.pageUrl) {
-      this.win.webContents.loadURL(this.pageUrl);
-    } else {
-      this.win.webContents.loadFile(PageFile);
-    }
+    this.win.webContents.loadURL(this.pageUrl || pageUrl);
+    
     this.win.webContents.openDevTools()
   }
 
