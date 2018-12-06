@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "src/app.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron . --debug --enable-logging"
   },
   "dependencies": {},
   "devDependencies": {

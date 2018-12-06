@@ -39,6 +39,7 @@ class Home {
       width: common.window_size.width,
       minWidth: common.window_size.minWidth,
       height: common.window_size.height,
+      minHeight: common.window_size.minHeight,
       webPreferences: {
         javascript: true,
         webSecurity: false,
@@ -48,13 +49,19 @@ class Home {
     this.homeWin.loadURL(PageUrl);
     // this.homeWin.loadFile(PageFile);
 
-    this.createRenderView();
+    // this.createRenderView();
 
     //openDevTools
     // this.homeWin.openDevTools();
 
   }
 
+  /**
+   * 创建render 子窗口（webView）
+   * todo: （暂时不考虑 多层 webView 的封装抽离）
+   * 1、webView 内 require('electron') 报require error。API有限制
+   * 2、webView 嵌套渲染 webView（for render box）& webview (for devTools box)时 renderView.getWebContents() 报错：undefined is not a function 即：API有限制
+   */
   createRenderView() {
     this.renderView = new RenderWindow(this.renderUrl);
     this.renderView.win.setBounds({x: 10, y: 50, width: 800, height: 600});

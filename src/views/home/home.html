@@ -1,22 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>devTools</title>
-    <link type="text/css" rel="stylesheet" href="./home.css"/>
-    <style type="text/css">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>devTools</title>
+  <link type="text/css" rel="stylesheet" href="../../common/common.css"/>
+  <link type="text/css" rel="stylesheet" href="./home.css"/>
+  <style type="text/css">
 
-    </style>
+  </style>
 </head>
 <body>
 
 <div class="dev-page page-home">
-    <header>
+  <div class="header">
+    <div class="inputBox">
+      <form>
         <input class="input" placeholder="输入您要调试的页面地址">
-    </header>
-    <p class="devTools" id="devTools">devTools</p>
-    <div class="content" id="content"></div>
+      </form>
+
+    </div>
+
+    <p class="toggleDevTools" id="toggleDevTools">homeWindow devTools toggle</p>
+  </div>
+
+  <div class="content" id="content">
+    <div class="renderBox">
+
+      <webview class="renderView" id="renderView">
+        renderView
+      </webview>
+    </div>
+    <div class="devTools">
+      <webview class="devToolsView" id="devToolsView">
+        devToolsView
+      </webview>
+    </div>
+
+  </div>
 </div>
 </body>
 <script type="text/javascript" src="homeRender.js"></script>
