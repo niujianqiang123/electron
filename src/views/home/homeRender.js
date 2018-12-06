@@ -34,11 +34,12 @@ function renderDevTools() {
   if (renderView.getWebContents) {
     renderViewWebContents = renderView.getWebContents();
     renderViewWebContents.setDevToolsWebContents(devToolsView.getWebContents());
+    renderViewWebContents.debugger.attach();
     renderViewWebContents.openDevTools({
-      detach:true
+      mode: 'detach'
     });
 
-    renderViewWebContents.debugger.attach();
+
   }
 
 }

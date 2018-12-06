@@ -75,13 +75,15 @@ class Home {
 
   renderEvents() {
     ipcMain.on('toggle-home-devTools', (event, arg) => {
-      if (this.homeWin.webContents.isDevToolsOpened()) {
-        this.homeWin.closeDevTools();
-      } else {
-        this.homeWin.openDevTools();
-      }
+      this.homeWin.toggleDevTools();
 
-    })
+      // if (this.homeWin.webContents.isDevToolsOpened()) {
+      //   this.homeWin.closeDevTools();
+      // } else {
+      //   this.homeWin.openDevTools();
+      // }
+
+    });
   }
 
   show() {
