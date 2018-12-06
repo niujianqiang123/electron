@@ -25,13 +25,20 @@ renderView.addEventListener('dom-ready', () => {
   renderDevTools();
 });
 
-
+/**
+ * todo:一片空白
+ * https://github.com/electron/electron/pull/11300
+ */
 function renderDevTools() {
   let renderViewWebContents = null;
   if (renderView.getWebContents) {
     renderViewWebContents = renderView.getWebContents();
     renderViewWebContents.setDevToolsWebContents(devToolsView.getWebContents());
-    renderViewWebContents.openDevTools();
+    renderViewWebContents.openDevTools({
+      detach:true
+    });
+
+    renderViewWebContents.debugger.attach();
   }
 
 }

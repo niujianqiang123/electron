@@ -22,3 +22,6 @@
 ### 语法（todo）
 - [ ] export default  class Main {
 - [ ] func=()=>{}
+
+### bugs
+- [ ] setDevToolsWebContents ：一片空白。亟待解决
