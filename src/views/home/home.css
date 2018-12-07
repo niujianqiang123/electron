@@ -25,6 +25,15 @@
   float: left;
   height: 100%;
 }
+.page-home .content .renderBox webview {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.page-home .content .renderBox iframe {
+  width: 100%;
+  height: 100%;
+}
 .page-home .content .devTools {
   border: 1px solid #FD3259;
   height: 100%;

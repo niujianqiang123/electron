@@ -15,17 +15,17 @@ const RenderWindow = require('../render/render');
 //pages
 // const PageUrl = 'https://wx.qq.com/?lang=zh_CN';
 const PageUrl = `file://${path.join(__dirname, './home.html')}`; // 默认相对于根目录
-// const PageUrl = `file://${path.join(__dirname, '../render/render.html')}`; // 默认相对于根目录
 
 class Home {
   constructor(params) {
     this.isShow = false;
     this.homeWin = null;
     this.renderView = null;
-    this.renderUrl = '';//https://electronjs.org
+    this.renderUrl = 'https://electronjs.org';//https://electronjs.org
 
     this.createWindow();
     this.renderEvents();
+    this.updateRenderUrl();
   }
 
   createWindow() {
@@ -84,6 +84,17 @@ class Home {
       // }
 
     });
+    ipcMain.on('home-renderPageUrl', (event, _inputValue) => {
+      // console.log(event);
+      this.renderUrl = _inputValue;
+
+      this.updateRenderUrl();
+    });
+
+  }
+
+  updateRenderUrl(){
+    this.renderUrl && this.homeWin.send('home-renderPageUrl', this.renderUrl);
   }
 
   show() {

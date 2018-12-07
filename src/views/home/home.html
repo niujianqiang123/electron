@@ -15,8 +15,8 @@
 <div class="dev-page page-home">
   <div class="header">
     <div class="inputBox">
-      <form>
-        <input class="input" placeholder="输入您要调试的页面地址">
+      <form onSubmit="return false;">
+        <input id="renderPageUrl" autofocus="autofocus" class="input" placeholder="输入您要调试的页面地址">
       </form>
 
     </div>
@@ -28,7 +28,7 @@
     <div class="renderBox">
 
       <webview class="renderView" id="renderView">
-        renderView
+        devTools
       </webview>
     </div>
     <div class="devTools">
