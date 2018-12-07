@@ -11,6 +11,7 @@ const {app, ipcMain, BrowserWindow, BrowserView, dialog} = require('electron');
 //modules
 const {common} = require('../../config/index');
 const RenderWindow = require('../render/render');
+const DevToolsWindow = require('../devtools/devTools');
 
 //pages
 // const PageUrl = 'https://wx.qq.com/?lang=zh_CN';
@@ -20,7 +21,8 @@ class Home {
   constructor(params) {
     this.isShow = false;
     this.homeWin = null;
-    this.renderView = null;
+    this.renderWin = null;
+    this.devToolsWin = null;
     this.renderUrl = 'https://electronjs.org';//default url
 
     this.createWindow();
@@ -46,9 +48,9 @@ class Home {
     });
 
     this.homeWin.loadURL(PageUrl);
-    // this.homeWin.loadFile(PageFile);
 
-    // this.createRenderView();
+    this.createDevToolsWindow();
+    this.createRenderWindow();
 
     //openDevTools
     // this.homeWin.openDevTools();
@@ -61,26 +63,32 @@ class Home {
    * 1、webView 内 require('electron') 报require error。API有限制
    * 2、webView 嵌套渲染 webView（for render box）& webview (for devTools box)时 renderView.getWebContents() 报错：undefined is not a function 即：API有限制
    */
-  createRenderView() {
-    this.renderView = new RenderWindow(this.renderUrl);
-    this.renderView.win.setBounds({x: 10, y: 50, width: 800, height: 600});
-    this.homeWin.setBrowserView(this.renderView.win);
+  createRenderWindow() {
+    this.renderWin = new RenderWindow({pageUrl: this.renderUrl});
 
-    if (!this.renderView.isShow) {
-      this.renderView.show();
+    if (!this.renderWin.isShow) {
+      this.renderWin.show();
+    }
+
+    this.setDevToolsWebContents();
+  }
+
+  createDevToolsWindow() {
+    this.devToolsWin = new DevToolsWindow();
+
+    if (!this.devToolsWin.isShow) {
+      this.devToolsWin.show();
     }
   }
 
+  setDevToolsWebContents() {
+    this.renderWin.setDevToolsWebContents(this.devToolsWin.win.webContents);
+  }
 
   renderEvents() {
     ipcMain.on('toggle-home-devTools', (event, arg) => {
       this.homeWin.toggleDevTools();
 
-      // if (this.homeWin.webContents.isDevToolsOpened()) {
-      //   this.homeWin.closeDevTools();
-      // } else {
-      //   this.homeWin.openDevTools();
-      // }
 
     });
     ipcMain.on('home-updateRenderUrl', (event, _inputValue) => {

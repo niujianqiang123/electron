@@ -16,7 +16,7 @@ const pageUrl = `file://${path.join(__dirname, './render.html')}`; // 默认相�
 
 class Render {
   constructor(params = {}) {
-    if (typeof params) {
+    if (typeof params === 'string') {
       params = {pageUrl: params};
     }
 
@@ -29,11 +29,11 @@ class Render {
   }
 
   createWindow() {
-    this.win = new BrowserView({
-      title: common.name,
+    this.win = new BrowserWindow({
+      title: "render",
       resizable: true,
       center: true,
-      show: true,
+      show: false,
       frame: true,
       autoHideMenuBar: true,
       width: common.window_render_size.width,
@@ -46,18 +46,22 @@ class Render {
       }
     });
 
-    this.isShow = true;
-
-
     this.win.webContents.loadURL(this.pageUrl || pageUrl);
-    
-    this.win.webContents.openDevTools()
-  }
 
+    // this.win.webContents.openDevTools()
+  }
+  setDevToolsWebContents(webContents){
+    this.win.webContents.setDevToolsWebContents(webContents)
+
+    // Open the DevTools.
+    this.win.webContents.openDevTools({mode: 'detach'})
+  }
   show() {
-    this.win.show();
-    this.win.focus();
-    this.isShow = true;
+    this.win.once('ready-to-show', () => {
+      this.win.show();
+      this.win.focus();
+      this.isShow = true;
+    });
   }
 }
 
