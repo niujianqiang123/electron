@@ -4,19 +4,31 @@
  */
 
 .page-home {
+  background: #eee;
+  @header-height: 100px;
   .header {
+    position: relative;
+    height: @header-height;
     .inputBox {
+      padding-top: 35px;
       form {
-        width: 80%;
+        background: #fff;
+        border: 1px solid #c7c7c7;
+        font-size: 14px;
+
+        width: 66%;
         margin: 0 auto;
+      }
+      input {
+        width: 100%;
+        line-height: 20px;
       }
     }
     .toggleDevTools {
       border-bottom: 1px solid #c7c7c7;
-    }
-    input {
-      width: 100%;
-      line-height: 20px;
+      position: absolute;
+      left: 10px;
+      top: 38px;
     }
 
   }
@@ -24,8 +36,11 @@
   //content
   .content {
     border: 1px solid #2ECA76;
+    box-sizing: border-box;
     overflow: hidden;
+    //兼容处理
     height: 100%;
+    height: calc(100% - @header-height);
     min-width: 800px;
     @renderBoxWidth: 400px;
 

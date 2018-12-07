@@ -2,21 +2,40 @@
  * Created by xiaogang on 2018/12/3.
  *
  */
+.page-home {
+  background: #eee;
+}
+.page-home .header {
+  position: relative;
+  height: 100px;
+}
+.page-home .header .inputBox {
+  padding-top: 35px;
+}
 .page-home .header .inputBox form {
-  width: 80%;
+  background: #fff;
+  border: 1px solid #c7c7c7;
+  font-size: 14px;
+  width: 66%;
   margin: 0 auto;
 }
-.page-home .header .toggleDevTools {
-  border-bottom: 1px solid #c7c7c7;
-}
-.page-home .header input {
+.page-home .header .inputBox input {
   width: 100%;
   line-height: 20px;
 }
+.page-home .header .toggleDevTools {
+  border-bottom: 1px solid #c7c7c7;
+  position: absolute;
+  left: 10px;
+  top: 38px;
+}
 .page-home .content {
   border: 1px solid #2ECA76;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   overflow: hidden;
   height: 100%;
+  height: calc(100% - 100px);
   min-width: 800px;
 }
 .page-home .content .renderBox {
