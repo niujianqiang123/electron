@@ -21,11 +21,11 @@ class Home {
     this.isShow = false;
     this.homeWin = null;
     this.renderView = null;
-    this.renderUrl = 'https://electronjs.org';//https://electronjs.org
+    this.renderUrl = 'https://electronjs.org';//default url
 
     this.createWindow();
     this.renderEvents();
-    this.updateRenderUrl();
+
   }
 
   createWindow() {
@@ -35,7 +35,6 @@ class Home {
       center: true,
       show: false,
       frame: true,
-      autoHideMenuBar: true,
       width: common.window_size.width,
       minWidth: common.window_size.minWidth,
       height: common.window_size.height,
@@ -84,7 +83,7 @@ class Home {
       // }
 
     });
-    ipcMain.on('home-renderPageUrl', (event, _inputValue) => {
+    ipcMain.on('home-updateRenderUrl', (event, _inputValue) => {
       // console.log(event);
       this.renderUrl = _inputValue;
 
@@ -93,14 +92,22 @@ class Home {
 
   }
 
-  updateRenderUrl(){
-    this.renderUrl && this.homeWin.send('home-renderPageUrl', this.renderUrl);
+  updateRenderUrl() {
+    this.renderUrl && this.homeWin.send('home-updateRenderUrl', this.renderUrl);
   }
 
+  /**
+   * 主窗口实例显示
+   */
   show() {
-    this.homeWin.show();
-    this.homeWin.focus();
-    this.isShow = true;
+    //
+    this.homeWin.once('ready-to-show', () => {
+      this.homeWin.show();
+      this.homeWin.focus();
+      this.isShow = true;
+
+      this.updateRenderUrl();
+    });
   }
 }
 

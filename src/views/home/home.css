@@ -20,14 +20,17 @@
   margin: 0 auto;
 }
 .page-home .header .inputBox input {
+  text-indent: 8px;
   width: 100%;
-  line-height: 20px;
+  line-height: 30px;
 }
 .page-home .header .toggleDevTools {
-  border-bottom: 1px solid #c7c7c7;
   position: absolute;
   left: 10px;
-  top: 38px;
+  top: 40px;
+  background: #fff;
+  padding: 2px 8px;
+  font-size: 12px;
 }
 .page-home .content {
   border: 1px solid #2ECA76;
