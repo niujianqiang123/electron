@@ -19,9 +19,11 @@ class Render {
     if (typeof params === 'string') {
       params = {pageUrl: params};
     }
+    console.log(params);
+    this.parentWin = params.parentWin || null;
 
     this.pageUrl = params.pageUrl;
-
+    this.bounds = params.bounds;
     this.isShow = false;
 
     this.win = null;
@@ -31,14 +33,15 @@ class Render {
   createWindow() {
     this.win = new BrowserWindow({
       title: "render",
-      resizable: true,
-      center: true,
+      parent: this.parentWin,
+      resizable: false,
+      center: false,
       show: false,
-      frame: true,
+      frame: false,
       autoHideMenuBar: true,
-      width: common.window_render_size.width,
-      minWidth: common.window_render_size.minWidth,
-      height: common.window_render_size.height,
+      // width: common.window_render_size.width,
+      // minWidth: common.window_render_size.minWidth,
+      // height: common.window_render_size.height,
       webPreferences: {
         javascript: true,
         nodeIntegration: false,
@@ -47,15 +50,24 @@ class Render {
     });
 
     this.win.webContents.loadURL(this.pageUrl || pageUrl);
-
+    this.setBounds();
     // this.win.webContents.openDevTools()
   }
-  setDevToolsWebContents(webContents){
+
+  setDevToolsWebContents(webContents) {
     this.win.webContents.setDevToolsWebContents(webContents)
 
     // Open the DevTools.
     this.win.webContents.openDevTools({mode: 'detach'})
   }
+
+  /**
+   * 根据父窗口调整位置
+   */
+  setBounds(bounds = this.bounds) {
+    this.win.setBounds(bounds);
+  }
+
   show() {
     this.win.once('ready-to-show', () => {
       this.win.show();

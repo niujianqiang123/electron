@@ -24,10 +24,14 @@ class Home {
     this.renderWin = null;
     this.devToolsWin = null;
     this.renderUrl = 'https://electronjs.org';//default url
+    this.contentBounds = {
+      headerHeight: 100,//顶部默认高度
+      renderWidth: 400,//渲染区默认宽度
+    }
 
     this.createWindow();
-    this.renderEvents();
-
+    this.ipcEvents();
+    this.instanceEvents();
   }
 
   createWindow() {
@@ -53,9 +57,14 @@ class Home {
     this.createRenderWindow();
 
     //openDevTools
-    // this.homeWin.openDevTools();
+    // this.toggleDevTools();
 
   }
+
+  toggleDevTools() {
+    this.homeWin.toggleDevTools();
+  };
+
 
   /**
    * 创建render 子窗口（webView）
@@ -64,7 +73,11 @@ class Home {
    * 2、webView 嵌套渲染 webView（for render box）& webview (for devTools box)时 renderView.getWebContents() 报错：undefined is not a function 即：API有限制
    */
   createRenderWindow() {
-    this.renderWin = new RenderWindow({pageUrl: this.renderUrl});
+    this.renderWin = new RenderWindow({
+      pageUrl: this.renderUrl,
+      parentWin: this.homeWin,
+      bounds: this.getContentBounds().render,
+    });
 
     if (!this.renderWin.isShow) {
       this.renderWin.show();
@@ -74,7 +87,10 @@ class Home {
   }
 
   createDevToolsWindow() {
-    this.devToolsWin = new DevToolsWindow();
+    this.devToolsWin = new DevToolsWindow({
+      parentWin: this.homeWin,
+      bounds: this.getContentBounds().devTools
+    });
 
     if (!this.devToolsWin.isShow) {
       this.devToolsWin.show();
@@ -85,11 +101,34 @@ class Home {
     this.renderWin.setDevToolsWebContents(this.devToolsWin.win.webContents);
   }
 
-  renderEvents() {
+  /**
+   * init or move or resize 的时候获取最新的 内容边界值
+   */
+  getContentBounds() {
+    let _rectangle = this.homeWin.getContentBounds();
+
+    return {
+      render: {
+        x: _rectangle.x,
+        y: _rectangle.y + this.contentBounds.headerHeight,
+        width: this.contentBounds.renderWidth,
+        height: _rectangle.height - this.contentBounds.headerHeight
+      },
+      devTools: {
+        x: _rectangle.x + this.contentBounds.renderWidth,
+        y: _rectangle.y + this.contentBounds.headerHeight,
+        width: _rectangle.width - this.contentBounds.renderWidth,
+        height: _rectangle.height - this.contentBounds.headerHeight
+      }
+    };
+  }
+
+  /**
+   * 线程间 通信
+   */
+  ipcEvents() {
     ipcMain.on('toggle-home-devTools', (event, arg) => {
       this.homeWin.toggleDevTools();
-
-
     });
     ipcMain.on('home-updateRenderUrl', (event, _inputValue) => {
       // console.log(event);
@@ -98,11 +137,29 @@ class Home {
       this.updateRenderUrl();
     });
 
+
   }
+
+  /**
+   * 实例事件
+   */
+  instanceEvents() {
+    /**
+     * todo: 加入去抖动函数
+     * tips:打开任务管理器，移动时: cpu 占用瞬间飙升
+     */
+    this.homeWin.on('move', (e) => {
+      let _newContentBounds = this.getContentBounds();
+      this.renderWin.setBounds(_newContentBounds.render);
+      this.devToolsWin.setBounds(_newContentBounds.devTools);
+    });
+  }
+
 
   updateRenderUrl() {
     this.renderUrl && this.homeWin.send('home-updateRenderUrl', this.renderUrl);
   }
+
 
   /**
    * 主窗口实例显示

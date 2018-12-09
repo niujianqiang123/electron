@@ -16,9 +16,9 @@ const pageUrl = `file://${path.join(__dirname, './devTools.html')}`; // 默认�
 
 class DevTools {
   constructor(params = {}) {
-
+    this.parentWin = params.parentWin || null;
     this.isShow = true;
-
+    this.bounds = params.bounds;
     this.win = null;
     this.createWindow();
   }
@@ -26,8 +26,9 @@ class DevTools {
   createWindow() {
     this.win = new BrowserWindow({
       title: "devtool",
-      resizable: true,
-      center: true,
+      parent: this.parentWin,
+      resizable: false,
+      center: false,
       show: true,
       frame: false,
       autoHideMenuBar: true,
@@ -41,6 +42,13 @@ class DevTools {
       }
     });
 
+  }
+
+  /**
+   * 根据父窗口调整位置
+   */
+  setBounds(bounds = this.bounds) {
+    this.win.setBounds(bounds);
   }
 
   show() {

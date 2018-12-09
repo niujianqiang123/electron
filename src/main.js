@@ -13,7 +13,7 @@ function createWindow() {
   // and load the index.html of the app.
   mainWindow.loadURL(PageUrl);
 
- let devtools = new BrowserWindow()
+  let devtools = new BrowserWindow()
   mainWindow.webContents.setDevToolsWebContents(devtools.webContents)
 
   // Open the DevTools.
