@@ -8,7 +8,7 @@ const {app, ipcMain, BrowserWindow, BrowserView} = require('electron');
 
 //modules
 const {common} = require('../../config/index');
-
+const {htmlScroll} = require('./injectCss');
 
 //pages
 const pageUrl = `file://${path.join(__dirname, './render.html')}`; // 默认相对于根目录
@@ -28,6 +28,7 @@ class Render {
 
     this.win = null;
     this.createWindow();
+    this.instanceEvents();
   }
 
   createWindow() {
@@ -56,6 +57,7 @@ class Render {
   }
 
   loadUrl(pUrl = this.pageUrl) {
+    this.preFixStyle();
     this.win.loadURL(pUrl);
   }
 
@@ -71,6 +73,20 @@ class Render {
    */
   setBounds(bounds = this.bounds) {
     this.win.setBounds(bounds);
+  }
+
+  preFixStyle() {
+    this.win.webContents.insertCSS(htmlScroll);
+
+  }
+
+  /**
+   * 实例事件
+   */
+  instanceEvents() {
+    this.win.webContents.on('dom-ready', (e) => {
+      this.preFixStyle();
+    });
   }
 
   show() {
