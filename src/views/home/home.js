@@ -153,11 +153,22 @@ class Home {
       this.renderWin.setBounds(_newContentBounds.render);
       this.devToolsWin.setBounds(_newContentBounds.devTools);
     });
+
+    /**
+     * todo: 加入去抖动函数
+     * tips:打开任务管理器，移动时: cpu 占用瞬间飙升
+     */
+    this.homeWin.on('resize', (e) => {
+      let _newContentBounds = this.getContentBounds();
+      this.renderWin.setBounds(_newContentBounds.render);
+      this.devToolsWin.setBounds(_newContentBounds.devTools);
+    });
   }
 
 
   updateRenderUrl() {
-    this.renderUrl && this.homeWin.send('home-updateRenderUrl', this.renderUrl);
+    // this.renderUrl && this.homeWin.send('home-updateRenderUrl', this.renderUrl);
+    this.renderUrl && this.renderWin.loadUrl(this.renderUrl);
   }
 
 
@@ -171,7 +182,7 @@ class Home {
       this.homeWin.focus();
       this.isShow = true;
 
-      this.updateRenderUrl();
+      // this.updateRenderUrl();
     });
   }
 }

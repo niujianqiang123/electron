@@ -22,7 +22,7 @@ class Render {
     console.log(params);
     this.parentWin = params.parentWin || null;
 
-    this.pageUrl = params.pageUrl;
+    this.pageUrl = params.pageUrl || pageUrl;
     this.bounds = params.bounds;
     this.isShow = false;
 
@@ -49,9 +49,14 @@ class Render {
       }
     });
 
-    this.win.webContents.loadURL(this.pageUrl || pageUrl);
+    // this.win.webContents.loadURL(this.pageUrl || pageUrl);
+    this.loadUrl();
     this.setBounds();
     // this.win.webContents.openDevTools()
+  }
+
+  loadUrl(pUrl = this.pageUrl) {
+    this.win.loadURL(pUrl);
   }
 
   setDevToolsWebContents(webContents) {
