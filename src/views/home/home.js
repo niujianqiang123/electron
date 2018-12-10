@@ -23,7 +23,7 @@ class Home {
     this.homeWin = null;
     this.renderWin = null;
     this.devToolsWin = null;
-    this.renderUrl = 'https://electronjs.org';//default url
+    this.renderUrl = '';//default url https://electronjs.org
     this.contentBounds = {
       headerHeight: 100,//顶部默认高度
       renderWidth: 400,//渲染区默认宽度

@@ -5,36 +5,25 @@
 @import "../../less/export";
 
 .page-render {
-  overflow: hidden;
-  height: 80%;
+  font-family: "Microsoft YaHei", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  color: #737373;
+  background-color: #fff;
+  margin: 50px 30px 0;
 
-  @render-width: 300px;
-  .renderBox {
-    float: left;
-    width: @render-width;
-    height: 100%;
-    min-width: 400px;
+  .header {
+    margin: 30px 0;
+    font-weight: 400;
+    text-align: center;
+    color: #404040;
+    line-height: 36px;
 
-    .header {
-      margin: 30px 0;
-      font-weight: 400;
-      text-align: center;
-      color: #404040;
-      line-height: 36px;
-    }
-    .contents {
-      font-size: 13px;
-      line-height: 18px;
-      color: #737373;
-
-      p {
-        margin-bottom: 12px;
-      }
-    }
+    font-size: 24px;
   }
-
-  .devTools {
-    margin-left: @render-width;
-    height: 100%;
+  .contents {
+    p{
+      margin-bottom: 12px;
+    }
   }
 }

@@ -118,31 +118,21 @@ html {
   text-align: center;
 }
 .page-render {
-  overflow: hidden;
-  height: 80%;
+  font-family: "Microsoft YaHei", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
+  color: #737373;
+  background-color: #fff;
+  margin: 50px 30px 0;
 }
-.page-render .renderBox {
-  float: left;
-  width: 300px;
-  height: 100%;
-  min-width: 400px;
-}
-.page-render .renderBox .header {
+.page-render .header {
   margin: 30px 0;
   font-weight: 400;
   text-align: center;
   color: #404040;
   line-height: 36px;
+  font-size: 24px;
 }
-.page-render .renderBox .contents {
-  font-size: 13px;
-  line-height: 18px;
-  color: #737373;
-}
-.page-render .renderBox .contents p {
+.page-render .contents p {
   margin-bottom: 12px;
-}
-.page-render .devTools {
-  margin-left: 300px;
-  height: 100%;
 }
