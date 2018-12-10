@@ -21,9 +21,12 @@ class Render {
     }
     console.log(params);
     this.parentWin = params.parentWin || null;
-
     this.pageUrl = params.pageUrl || pageUrl;
     this.bounds = params.bounds;
+    this.renderMargin = {
+      x: 20,
+      y: 50
+    };
     this.isShow = false;
 
     this.win = null;
@@ -71,8 +74,14 @@ class Render {
   /**
    * 根据父窗口调整位置
    */
-  setBounds(bounds = this.bounds) {
-    this.win.setBounds(bounds);
+  setBounds(bounds = this.bounds, margin = this.renderMargin) {
+    let _bounds = {
+      x: bounds.x + margin.x,
+      y: bounds.y + margin.y,
+      width: bounds.width - 2 * margin.x,
+      height: bounds.height - 1.5 * margin.y
+    }
+    this.win.setBounds(_bounds);
   }
 
   preFixStyle() {

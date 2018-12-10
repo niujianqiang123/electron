@@ -9,8 +9,6 @@ const {ipcRenderer} = require('electron');
 //page
 
 
-
-
 window.onload = function (e) {
   console.log(e);
   initPageEvents();
@@ -39,9 +37,8 @@ function initPageEvents() {
       ipcRenderer.send('home-updateRenderUrl', _inputValue);
     }
   });
+
 }
-
-
 
 
 function $(id) {

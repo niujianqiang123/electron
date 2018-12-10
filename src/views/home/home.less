@@ -38,6 +38,29 @@
 
   //content
   .content {
+    @renderBoxWidth: 400px;
+    overflow: hidden;
+    .renderView {
+      float: left;
+      min-width: @renderBoxWidth;
+
+
+      .selectsBox{
+        overflow: hidden;
+        border-bottom: 1px solid #ccc;
+        border-top: 1px solid #ccc;
+
+        select{
+          float: left;
+          height: 30px;
+          max-width: 110px;
+          width: 30%;
+          border: none;
+          border-right: 1px solid #ccc;
+        }
+      }
+    }
+
     //border: 1px solid #2ECA76;
     //box-sizing: border-box;
     //overflow: hidden;
