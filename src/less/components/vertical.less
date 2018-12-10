@@ -1,0 +1,46 @@
+/**
+* 解决垂直方向的一些问题
+**/
+
+.ex-vertical(@dir:center) {
+  position: absolute;
+  .vertical(@dir);
+
+  .dir(@top:initial,@left:initial,@bottom:initial,@right:initial) {
+
+  }
+
+  .vertical(right) {
+    top: 50%;
+    right: 0;
+    transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+  }
+  .vertical(left) {
+    top: 50%;
+    left: 0;
+    transform: translate(0, -50%);
+    -webkit-transform: translate(0, -50%);
+  }
+
+  .vertical(top) {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+  }
+
+  .vertical(bottom) {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    -webkit-transform: translate(-50%, 0);
+  }
+
+  .vertical(@dir) when (default()) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+  }
+}

@@ -26,26 +26,39 @@
 
   <div class="content" id="content">
     <div class="renderView">
-      <div class="selectsBox">
-        <select id="phoneType">
-          <option value="mi_mix_2">mi mix 2 (320*568 | Dpr:2)</option>
-          <option value="iphone_5">iphone5 (320*568 | Dpr:2)</option>
-          <option value="iphone_6" selected>iphone6 (375*667 | Dpr:2)</option>
-        </select>
-        <select id="percent">
-          <option value="100">100%</option>
-          <option value="85">85%</option>
-          <option value="75" selected>75%</option>
-          <option value="50">50%</option>
-        </select>
-        <select id="network">
-          <option value="wifi" selected>WIFI</option>
-          <option value="2G">2G</option>
-          <option value="3G">3G</option>
-          <option value="4G">4G</option>
-          <option value="5G">5G</option>
-          <option value="Offline">Offline</option>
-        </select>
+      <div class="selectsBox" id="selectsBox">
+
+        <div class="pre-select">
+          <p class="select-header pre-ellipsis">-</p>
+          <select class="select" id="phoneType">
+            <option class="option" value="320*568*2">mi mix 2 (320*568 | Dpr:2)</option>
+            <option class="option" value="320*568*2">iphone 5 (320*568 | Dpr:2)</option>
+            <option class="option" value="375*667*2">iphone 6 (375*667 | Dpr:2)</option>
+          </select>
+        </div>
+
+        <div class="pre-select">
+          <p class="select-header pre-ellipsis">-</p>
+          <select class="select" id="percent">
+            <option class="option" value="100">100%</option>
+            <option class="option" value="85">85%</option>
+            <option class="option" value="75" selected>75%</option>
+            <option class="option" value="50">50%</option>
+          </select>
+        </div>
+
+        <div class="pre-select">
+          <p class="select-header pre-ellipsis">-</p>
+          <select class="select" id="network">
+            <option class="option" value="wifi" selected>WIFI</option>
+            <option class="option" value="2G">2G</option>
+            <option class="option" value="3G">3G</option>
+            <option class="option" value="4G">4G</option>
+            <option class="option" value="5G">5G</option>
+            <option class="option" value="Offline">Offline</option>
+          </select>
+        </div>
+
       </div>
 
     </div>

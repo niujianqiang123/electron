@@ -81,7 +81,29 @@ class Render {
       width: bounds.width - 2 * margin.x,
       height: bounds.height - 1.5 * margin.y
     }
-    this.win.setBounds(_bounds);
+    //保存数据 & 同时更新渲染
+    this.win.setBounds(_bounds, true);
+    this.bounds = bounds;
+  }
+
+  /**
+   *
+   */
+  optionsChange(options = {}, margin = this.renderMargin) {
+    console.log(options);
+    console.log(margin);
+    if (!(options.width && options.height)) {
+      return;
+    }
+    let _bounds = {
+      x: this.bounds.x + margin.x,
+      y: this.bounds.y + margin.y,
+      width: options.width - 2 * margin.x,
+      height: options.height - 1.5 * margin.y
+    }
+
+    console.log(_bounds);
+    this.win.setBounds(_bounds, true);
   }
 
   preFixStyle() {

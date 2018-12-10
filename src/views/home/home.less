@@ -44,19 +44,35 @@
       float: left;
       min-width: @renderBoxWidth;
 
-
-      .selectsBox{
+      .selectsBox {
+        @border: 1px solid #ccc;
         overflow: hidden;
-        border-bottom: 1px solid #ccc;
-        border-top: 1px solid #ccc;
+        border-bottom: @border;
+        border-top: @border;
 
-        select{
+        @select-height: 30px;
+        .pre-select {
+          position: relative;
           float: left;
-          height: 30px;
           max-width: 110px;
           width: 30%;
+          height: @select-height;
+          line-height: @select-height;
+
+          .select-header {
+            position: absolute;
+            width: 100%;
+            text-indent: 6px;
+            border-right: @border;
+          }
+        }
+
+        .select, select {
+          height: @select-height;
           border: none;
-          border-right: 1px solid #ccc;
+          width: 100%;
+          opacity: 0;
+          appearance: none;
         }
       }
     }

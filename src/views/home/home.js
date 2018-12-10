@@ -127,17 +127,18 @@ class Home {
    * 线程间 通信
    */
   ipcEvents() {
-    ipcMain.on('toggle-home-devTools', (event, arg) => {
+    ipcMain.on('home-toggle-devTools', (event, arg) => {
       this.homeWin.toggleDevTools();
     });
     ipcMain.on('home-updateRenderUrl', (event, _inputValue) => {
-      // console.log(event);
       this.renderUrl = _inputValue;
 
       this.updateRenderUrl();
     });
 
-
+    ipcMain.on('home-render-options', (event, options) => {
+      this.renderWin.optionsChange(options)
+    });
   }
 
   /**
