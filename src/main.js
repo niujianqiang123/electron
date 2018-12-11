@@ -5,7 +5,11 @@ const {app, BrowserWindow, BrowserView} = require('electron')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-const PageUrl = 'https://electronjs.org'// `file://${path.join(__dirname, '../webviewDevTools.html')}`
+const PageUrl = 'https://github.com/electron/electron';
+// const PageUrl = `file://${path.join(__dirname, '../examples/webviewDevTools.html')}`;
+// const initDevTools = require('../examples/webviewDevTools');
+// const initDevTools = require('../examples/browserWindowDevTools');
+const initDevTools = require('../examples/browserWindow_viewDevTools');
 
 function createWindow() {
   // Create the browser window.
@@ -13,11 +17,11 @@ function createWindow() {
   // and load the index.html of the app.
   mainWindow.loadURL(PageUrl);
 
-  let devtools = new BrowserWindow()
-  mainWindow.webContents.setDevToolsWebContents(devtools.webContents)
-
   // Open the DevTools.
-  mainWindow.webContents.openDevTools({mode: 'detach'})
+  mainWindow.webContents.openDevTools({mode: 'right'});
+
+
+  initDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
