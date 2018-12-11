@@ -7,7 +7,7 @@ const path = require('path');
 const {app, ipcMain, BrowserWindow, BrowserView} = require('electron');
 
 //modules
-const {common} = require('../../config/index');
+const {winConfig} = require('../../config/index');
 const {htmlScroll} = require('./injectCss');
 
 //pages
@@ -16,36 +16,33 @@ const pageUrl = `file://${path.join(__dirname, './render.html')}`; // 默认相�
 
 class Render {
   constructor(params = {}) {
-    if (typeof params === 'string') {
-      params = {pageUrl: params};
-    }
+    console.log(`--new Render constructor--`);
     console.log(params);
+    //定义 对象实例（new ClassName） 的属性
     this.parentWin = params.parentWin || null;
+    this.title = params.title || 'render view';
     this.pageUrl = params.pageUrl || pageUrl;
+    this.renderConfig = params.renderConfig || winConfig.render;
+    //跟随主窗口 没法设置默认值
     this.bounds = params.bounds;
-    this.renderMargin = {
-      x: 20,
-      y: 50
-    };
-    this.isShow = false;
+
+    this.isShow = params.show || false;
 
     this.win = null;
     this.createWindow();
     this.instanceEvents();
   }
 
+
   createWindow() {
     this.win = new BrowserWindow({
-      title: "render",
+      title: this.title,
       parent: this.parentWin,
       resizable: false,
       center: false,
-      show: false,
+      show: this.isShow,
       frame: false,
       autoHideMenuBar: true,
-      // width: common.window_render_size.width,
-      // minWidth: common.window_render_size.minWidth,
-      // height: common.window_render_size.height,
       webPreferences: {
         javascript: true,
         nodeIntegration: false,
@@ -53,17 +50,47 @@ class Render {
       }
     });
 
-    // this.win.webContents.loadURL(this.pageUrl || pageUrl);
-    this.loadUrl();
+
+    this.loadUrl(this.pageUrl, {forceLoad: true});
     this.setBounds();
     // this.win.webContents.openDevTools()
   }
 
-  loadUrl(pUrl = this.pageUrl) {
+  /**
+   *  https://electronjs.org/docs/api/web-contents#contentsloadurlurl-options
+   * @param pUrl
+   * @param options={
+   *      @Boolean forceLoad //初始化时强制绕过
+   *      @String userAgent
+   * }
+   */
+  loadUrl(pUrl = this.pageUrl, options = {forceLoad: false}) {
+    //update pageUrl
+    if (!options.forceLoad && pUrl === this.pageUrl) {
+      return;
+    }
+    this.pageUrl = pUrl
     this.preFixStyle();
-    this.win.loadURL(pUrl);
+    this.win.loadURL(pUrl, {
+      httpReferrer: options.httpReferrer,//'https://electronjs.org'
+      userAgent: options.userAgent
+    });
   }
 
+  /**
+   * https://github.com/electron/electron/issues/4099
+   * You should call enableDeviceEmulation after the page gets loaded.
+   * @param params
+   */
+  enableDeviceEmulation(params = this.renderConfig.deviceEmulation) {
+    console.log(params);
+    this.win.webContents.enableDeviceEmulation(params)
+  }
+
+  /**
+   * 开启 devTools
+   * @param webContents
+   */
   setDevToolsWebContents(webContents) {
     this.win.webContents.setDevToolsWebContents(webContents)
 
@@ -72,42 +99,74 @@ class Render {
   }
 
   /**
-   * 根据父窗口调整位置
+   *
+   * @param bounds
    */
-  setBounds(bounds = this.bounds, margin = this.renderMargin) {
-    let _bounds = {
-      x: bounds.x + margin.x,
-      y: bounds.y + margin.y,
-      width: bounds.width - 2 * margin.x,
-      height: bounds.height - 1.5 * margin.y
-    }
-    //保存数据 & 同时更新渲染
-    this.win.setBounds(_bounds, true);
+  updateBound(bounds) {
     this.bounds = bounds;
   }
 
   /**
+   * 根据父窗口调整位置
    *
    */
-  optionsChange(options = {}, margin = this.renderMargin) {
+  setBounds(bounds = this.bounds, margin = this.renderConfig.margin, screenSize = this.renderConfig.deviceEmulation.screenSize) {
+    let _width = bounds.width - 2 * margin.x;
+    let _height = bounds.height - 1.5 * margin.y;//Math.round(_width * (screenSize.height / screenSize.width));
+    let _bounds = {
+      x: bounds.x + margin.x,
+      y: bounds.y + margin.y,
+      width: _width,
+      height: _height
+    }
+    // console.log(`--------render--setBounds----------`);
+    // console.log(_bounds);
+    //保存数据 & 同时更新渲染
+    this.win.setBounds(_bounds, true);
+    this.updateBound(bounds);
+  }
+
+  /**
+   * todo:
+   * 更新 & 重新渲染
+   */
+  optionsChange(options = {}, margin = this.renderConfig.margin) {
     console.log(options);
     console.log(margin);
-    if (!(options.width && options.height)) {
-      return;
-    }
-    let _bounds = {
-      x: this.bounds.x + margin.x,
-      y: this.bounds.y + margin.y,
-      width: options.width - 2 * margin.x,
-      height: options.height - 1.5 * margin.y
+
+    //todo 根据options 调整 margin
+    // this.renderConfig.margin
+    //更新 配置数据
+    if (options.percent) {
+      this.renderConfig.bounds.percent = options.percent;
+
     }
 
-    console.log(_bounds);
-    this.win.setBounds(_bounds, true);
+    if (options.dpr) {
+      this.renderConfig.deviceEmulation.deviceScaleFactor = Math.floor(options.dpr)
+    }
+
+    if (options.width && options.height) {
+
+      // this.renderConfig.bounds.width = options.width + this.renderConfig.margin.x;
+      //
+      // this.renderConfig.deviceEmulation.viewSize.width = this.renderConfig.deviceEmulation.screenSize.width = Math.floor(options.width);
+      // this.renderConfig.deviceEmulation.viewSize.height = this.renderConfig.deviceEmulation.screenSize.height = Math.floor(options.height);
+    }
+
+    // let _bounds = {
+    //   x: this.bounds.x + margin.x,
+    //   y: this.bounds.y + margin.y,
+    //   width: options.width - 2 * margin.x,
+    //   height: options.height - 1.5 * margin.y
+    // }
+    //
+    // console.log(_bounds);
+    // this.win.setBounds(_bounds, true);
   }
 
   preFixStyle() {
-    this.win.webContents.insertCSS(htmlScroll);
+    // this.win.webContents.insertCSS(htmlScroll);
 
   }
 
@@ -117,6 +176,10 @@ class Render {
   instanceEvents() {
     this.win.webContents.on('dom-ready', (e) => {
       this.preFixStyle();
+    });
+
+    this.win.webContents.on('did-finish-load', (e) => {
+      this.enableDeviceEmulation();
     });
   }
 

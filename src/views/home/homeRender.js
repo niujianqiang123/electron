@@ -63,10 +63,11 @@ function selectsBoxChange(target) {
       _setSelect(item)
     });
   }
-
+  console.log(`------ homeRender---selectsBoxChange-----`);
   console.log(_options);
 
   renderChange(_options)
+
   /**
    * 获取 select 信息
    * @param target

@@ -21,20 +21,18 @@ class DevTools {
     this.bounds = params.bounds;
     this.win = null;
     this.createWindow();
+    this.setBounds();
   }
 
   createWindow() {
     this.win = new BrowserWindow({
-      title: "devtool",
+      title: "renderView devTool",
       parent: this.parentWin,
       resizable: false,
       center: false,
-      show: true,
+      show: this.isShow,
       frame: false,
       autoHideMenuBar: true,
-      width: common.window_render_size.width,
-      minWidth: common.window_render_size.minWidth,
-      height: common.window_render_size.height,
       webPreferences: {
         javascript: true,
         nodeIntegration: false,
@@ -48,6 +46,8 @@ class DevTools {
    * 根据父窗口调整位置
    */
   setBounds(bounds = this.bounds) {
+    // console.log(`--------devTools--setBounds----------`);
+    // console.log(bounds);
     this.win.setBounds(bounds);
   }
 
