@@ -7,7 +7,7 @@
 const {app, BrowserWindow, BrowserView} = require("electron");
 
 //modules
-const HomeWindow = require('./views/home/home');
+const HomeWindow = require('./views/home/homeMain');
 
 
 // todo : export default  class Main {
