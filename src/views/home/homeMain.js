@@ -59,9 +59,7 @@ class Home {
     this._createRenderWindow();
   }
 
-  toggleDevTools() {
-    this.homeWin.toggleDevTools();
-  };
+
 
 
   /**
@@ -97,42 +95,6 @@ class Home {
 
   _setDevToolsWebContents() {
     this._renderWin.setDevToolsWebContents(this._devToolsWin.win.webContents);
-  }
-
-  /**
-   * 用户更新 selects 时
-   * @param params={
-   *    @Integer width
-   *    @Integer height
-   *    @Number percent
-   *    @Integer marginX
-   *    @Integer marginTop
-   * }
-   */
-  updateRenderBounds(params = {}) {
-    this._renderBounds = params
-  }
-
-  /**
-   * init or move or resize 的时候获取最新的 内容边界值
-   */
-  getContentBounds() {
-    let _rectangle = this.homeWin.getContentBounds();
-
-    return {
-      render: {
-        x: _rectangle.x,
-        y: _rectangle.y + this._homeBounds.headerHeight,
-        width: this._renderBounds.width,
-        height: _rectangle.height - this._homeBounds.headerHeight
-      },
-      devTools: {
-        x: _rectangle.x + this._renderBounds.width,
-        y: _rectangle.y + this._homeBounds.headerHeight,
-        width: _rectangle.width - this._renderBounds.width,
-        height: _rectangle.height - this._homeBounds.headerHeight
-      }
-    };
   }
 
   /**
@@ -172,6 +134,46 @@ class Home {
       this._devToolsWin.setBounds(_newContentBounds.devTools);
     });
   }
+
+  /**
+   * 用户更新 selects 时
+   * @param params={
+   *    @Integer width
+   *    @Integer height
+   *    @Number percent
+   *    @Integer marginX
+   *    @Integer marginTop
+   * }
+   */
+  updateRenderBounds(params = {}) {
+    this._renderBounds = params
+  }
+
+  /**
+   * init or move or resize 的时候获取最新的 内容边界值
+   */
+  getContentBounds() {
+    let _rectangle = this.homeWin.getContentBounds();
+
+    return {
+      render: {
+        x: _rectangle.x,
+        y: _rectangle.y + this._homeBounds.headerHeight,
+        width: this._renderBounds.width,
+        height: _rectangle.height - this._homeBounds.headerHeight
+      },
+      devTools: {
+        x: _rectangle.x + this._renderBounds.width,
+        y: _rectangle.y + this._homeBounds.headerHeight,
+        width: _rectangle.width - this._renderBounds.width,
+        height: _rectangle.height - this._homeBounds.headerHeight
+      }
+    };
+  }
+
+  toggleDevTools() {
+    this.homeWin.toggleDevTools();
+  };
 
   /**
    *
