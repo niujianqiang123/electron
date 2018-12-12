@@ -16,9 +16,12 @@
 
 ## todo
 - [x] 窗口布局：let view = new BrowserView({})
-- [ ] 采用class格式编写维护
-- [ ] 自定义展示 devTools 的功能区域
+- [x] 采用class格式编写维护
+- [x] 自定义展示 devTools 的功能区域
 - [ ] 类 方法&属性私有化的处理 待优化 \[暂时 **_标识** & 同时不要去直接调用私有化的方法和属性，避免后续改造完影响正常使用] 
+- [ ] select 小于 100% 时显示bug!
+- [ ] renderWindow 中 contentHeight 设置问题！
+- [ ] renderWindow 滚动事件监听
 ### 语法（todo）
 - [ ] export default  class Main {
 - [ ] func=()=>{}

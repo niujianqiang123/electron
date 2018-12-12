@@ -135,15 +135,15 @@ class Home {
   }
 
   /**
-   * todo ： renderFlag 避免初始化 死循环
-   * @param renderFlag
+   * 更新子窗口
+   * @param fromChild : Boolean 是否来自子类更新之后通知父级窗口（避免死循环）
    * @private
    */
-  _updateChildBounds(renderFlag) {
+  _updateChildBounds(fromChild) {
     let _newContentBounds = this._getContentBounds();
     console.log(`-------homeMain--_updateChildBounds------`);
     console.log(_newContentBounds);
-    !renderFlag && this._renderWin && this._renderWin.setBounds(_newContentBounds.render);
+    !fromChild && this._renderWin && this._renderWin.setBounds(_newContentBounds.render);
     this._devToolsWin && this._devToolsWin.setBounds(_newContentBounds.devTools);
   }
 
@@ -178,13 +178,15 @@ class Home {
    *    @Integer marginX
    *    @Integer marginTop
    * }
+   *
+   * @param fromChild : Boolean 是否来自子类更新之后通知父级窗口（避免死循环）
    */
-  updateRenderBounds(params = {}) {
+  updateRenderBounds(params = {}, fromChild = true) {
     console.log(`----------homeMain updateRenderBounds----------`)
     this._renderBounds = params;
     // console.log(params);
     // console.log(this);
-    this._updateChildBounds(true);
+    this._updateChildBounds(fromChild);
 
   }
 

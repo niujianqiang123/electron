@@ -20,6 +20,7 @@ class Render {
     console.log(`--new Render constructor--`);
     console.log(params);
     //私有属性
+    this._homeWin = params.homeWin;
     this._parentWin = params.parentWin || null;
     this._title = params.title || 'render view';
     //模拟器 渲染区 窗口
@@ -61,6 +62,7 @@ class Render {
 
     this.win.loadURL(pageUrl);
     this.setBounds();
+    this._setContentSize();
     this.win.webContents.openDevTools({
       mode: 'detach'
     })
@@ -94,6 +96,14 @@ class Render {
     webContents.enableDeviceEmulation(params)
   }
 
+  /**
+   * todo: 设置无效！
+   * @private
+   */
+  _setContentSize() {
+    console.log(this._bounds.viewSize.contentHeight);
+    this.win.setContentSize(this._bounds.viewSize.width, this._bounds.viewSize.contentHeight, true);
+  }
 
   /**
    * 设置 渲染区 位置
@@ -114,10 +124,20 @@ class Render {
   /**
    *
    * @param bounds
+   * @param updateParent 是否更新之后通知父级窗口（影响父级窗口布局）
    * @private
    */
-  _updateBound(bounds) {
-    this._bounds = Object.assign({}, this._bounds, bounds);
+  _updateBound(bounds, updateParent = false) {
+    //优化浅拷贝 对象的 bug
+    if (bounds.viewSize) {
+      let _viewSize = Object.assign({}, this._bounds.viewSize, bounds.viewSize);
+      this._bounds = Object.assign({}, this._bounds, bounds, {viewSize: _viewSize});
+    } else {
+      this._bounds = Object.assign({}, this._bounds, bounds);
+    }
+
+    //默认不通知父级更新
+    updateParent && this._homeWin.updateRenderBounds(this._bounds, updateParent);
   }
 
   /**
@@ -133,7 +153,7 @@ class Render {
    * todo:
    * 更新 & 重新渲染
    */
-  _optionsChange(options = {}, margin = {}) {
+  _optionsChange(options = {}) {
     console.log(`--------renderMain & _optionsChange---------`);
     let _viewSize = {};
     let _deviceEmulation = {};
@@ -143,34 +163,34 @@ class Render {
     // this.renderConfig.margin
     //更新 配置数据
     if (options.percent) {
-      _viewSize.percent = options.percent;
+      _viewSize.percent = Math.floor(options.percent);
     }
 
     if (options.dpr) {
-      _deviceEmulation.deviceScaleFactor = options.dpr;
+      _deviceEmulation.deviceScaleFactor = Number(options.dpr);
     }
 
     if (options.width && options.height) {
-      _viewSize = {
-        width: options.width,
-        height: options.height
-      }
-      _deviceEmulation.screenSize = {
-        width: options.width,
-        height: options.height
-      };
-      _deviceEmulation.viewSize = {
-        width: options.width,
-        height: options.height
-      }
+      _viewSize =
+        _deviceEmulation.screenSize =
+          _deviceEmulation.viewSize = {
+            width: Math.floor(options.width),
+            height: Math.floor(options.height)
+          }
 
+      this.setBounds({
+        // x: this._bounds.x,
+        // y: this._bounds.y,
+        width: Math.floor(options.width) + this._bounds.viewSize.marginX * 2,
+        // height: this._bounds.height
+      });
       this._updateDeviceEmulation(_deviceEmulation);
     }
 
     this._updateBound({
-      viewSize: Object.assign({}, this._bounds.viewSize, _viewSize)
-    });
-    // this.setBounds();
+      viewSize: _viewSize,//Object.assign({}, this._bounds.viewSize, _viewSize)
+    }, true);
+
     this._setRenderViewBounds();
     this._enableDeviceEmulation(this._renderView.webContents);
   }
@@ -228,16 +248,25 @@ class Render {
   }
 
   /**
-   * 根据父窗口调整位置
+   * 调整 renderWin 位置&更新 数据
    *
    */
-  setBounds(bounds = this._bounds) {
-    // console.log(`--------render--setBounds----------`);
-    // console.log(bounds);
+  setBounds(bounds = this._bounds, updateParent = false) {
+    console.log(`--------render--setBounds----------`);
+    console.log(bounds);
     //保存数据 & 同时更新渲染
-    this.win.setBounds(bounds, true);
     this._updateBound(bounds);
+    //优化： 可以只传递 更新的值
+    let _bounds = {
+      x: bounds.x || this._bounds.x,
+      y: bounds.y || this._bounds.y,
+      width: bounds.width || this._bounds.width,
+      height: bounds.height || this._bounds.height
+    }
+    this.win.setBounds(_bounds, true);
+
   }
+
 
   /**
    *  https://electronjs.org/docs/api/web-contents#contentsloadurlurl-options
