@@ -60,8 +60,6 @@ class Home {
   }
 
 
-
-
   /**
    * 创建render 子窗口（webView）
    * todo: （暂时不考虑 多层 webView 的封装抽离）
@@ -72,7 +70,13 @@ class Home {
     this._renderWin = new RenderWindow({
       pageUrl: this._renderUrl,
       parentWin: this.homeWin,
-      bounds: this.getContentBounds().render,
+      bounds: this._getContentBounds().render,
+      /**
+       * todo :子类更新时，同步更新其他子类布局
+       * 1、把 父类的实例 传递给子类。便于在 [仿真器]子类 的 私有更新函数 中调用父类的 实例更新函数 去集中控制整体布局更新
+       * 2、把需要和 [仿真器]子类 私有更新函数 保持同步更新的其他 子类实例 传递给 [仿真器]子类，在 [仿真器]子类 的 私有更新函数 里面控制各实例的布局更新
+       */
+      homeWin: this,
     });
 
     if (!this._renderWin.isShow) {
@@ -85,7 +89,7 @@ class Home {
   _createDevToolsWindow() {
     this._devToolsWin = new DevToolsWindow({
       parentWin: this.homeWin,
-      bounds: this.getContentBounds().devTools
+      bounds: this._getContentBounds().devTools
     });
 
     if (!this._devToolsWin.isShow) {
@@ -119,9 +123,7 @@ class Home {
      * tips:打开任务管理器，移动时: cpu 占用瞬间飙升
      */
     this.homeWin.on('move', (e) => {
-      let _newContentBounds = this.getContentBounds();
-      this._renderWin.setBounds(_newContentBounds.render);
-      this._devToolsWin.setBounds(_newContentBounds.devTools);
+      this._updateChildBounds();
     });
 
     /**
@@ -129,30 +131,27 @@ class Home {
      * tips:打开任务管理器，移动时: cpu 占用瞬间飙升
      */
     this.homeWin.on('resize', (e) => {
-      let _newContentBounds = this.getContentBounds();
-      this._renderWin.setBounds(_newContentBounds.render);
-      this._devToolsWin.setBounds(_newContentBounds.devTools);
+      this._updateChildBounds();
     });
   }
 
   /**
-   * 用户更新 selects 时
-   * @param params={
-   *    @Integer width
-   *    @Integer height
-   *    @Number percent
-   *    @Integer marginX
-   *    @Integer marginTop
-   * }
+   * todo ： renderFlag 避免初始化 死循环
+   * @param renderFlag
+   * @private
    */
-  updateRenderBounds(params = {}) {
-    this._renderBounds = params
+  _updateChildBounds(renderFlag) {
+    let _newContentBounds = this._getContentBounds();
+    console.log(`-------homeMain--_updateChildBounds------`);
+    console.log(_newContentBounds);
+    !renderFlag && this._renderWin && this._renderWin.setBounds(_newContentBounds.render);
+    this._devToolsWin && this._devToolsWin.setBounds(_newContentBounds.devTools);
   }
 
   /**
    * init or move or resize 的时候获取最新的 内容边界值
    */
-  getContentBounds() {
+  _getContentBounds() {
     let _rectangle = this.homeWin.getContentBounds();
 
     return {
@@ -169,6 +168,25 @@ class Home {
         height: _rectangle.height - this._homeBounds.headerHeight
       }
     };
+  }
+
+  /**
+   * 用户更新 selects 时
+   * @param params={
+   *    @Integer width
+   *    @Integer height
+   *    @Number percent
+   *    @Integer marginX
+   *    @Integer marginTop
+   * }
+   */
+  updateRenderBounds(params = {}) {
+    console.log(`----------homeMain updateRenderBounds----------`)
+    this._renderBounds = params;
+    // console.log(params);
+    // console.log(this);
+    this._updateChildBounds(true);
+
   }
 
   toggleDevTools() {
