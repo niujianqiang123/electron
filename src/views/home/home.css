@@ -32,39 +32,3 @@
   padding: 2px 8px;
   font-size: 12px;
 }
-.page-home .content {
-  overflow: hidden;
-}
-.page-home .content .renderView {
-  float: left;
-  min-width: 400px;
-}
-.page-home .content .renderView .selectsBox {
-  overflow: hidden;
-  border-bottom: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-}
-.page-home .content .renderView .selectsBox .pre-select {
-  position: relative;
-  float: left;
-  max-width: 110px;
-  width: 30%;
-  height: 30px;
-  line-height: 30px;
-}
-.page-home .content .renderView .selectsBox .pre-select .select-header {
-  position: absolute;
-  width: 100%;
-  text-indent: 6px;
-  border-right: 1px solid #ccc;
-}
-.page-home .content .renderView .selectsBox .select,
-.page-home .content .renderView .selectsBox select {
-  height: 30px;
-  border: none;
-  width: 100%;
-  opacity: 0;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-}

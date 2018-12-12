@@ -30,7 +30,7 @@ module.exports = {
         height: 667,
         //缩放 百分比
         percent: 75,
-        //左右边界
+        //左右边界（100%比例下）
         marginX: 30,
         marginY: 20,
       },
