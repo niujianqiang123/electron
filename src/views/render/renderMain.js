@@ -71,19 +71,16 @@ class Render {
    */
   _createRenderView(params = {}) {
     this._renderView = new BrowserView(params);
+    this.loadUrl(this._viewUrl, {forceLoad: true});
     this._setBrowserView();
     this._setRenderViewBounds();
-    this.loadUrl(this._viewUrl, {forceLoad: true});
   }
 
   _setBrowserView() {
-    if (this.win) {
+    if (this.win && this._renderView) {
       this.win.setBrowserView(this._renderView)
     }
   }
-
-
-
 
   /**
    * https://github.com/electron/electron/issues/4099
@@ -92,62 +89,90 @@ class Render {
    * @param params
    */
   _enableDeviceEmulation(webContents = this._renderView.webContents, params = this._deviceEmulation) {
+    console.log('------------renderMain && _enableDeviceEmulation------------');
     console.log(params);
     webContents.enableDeviceEmulation(params)
   }
 
 
   /**
-   *
-   * @param bounds
-   */
-  _updateBound(bounds) {
-    this._bounds = bounds;
-  }
-
-  /**
    * 设置 渲染区 位置
    */
   _setRenderViewBounds(bounds = this._bounds) {
-    console.log(bounds)
+    console.log('------------renderMain && setRenderViewBounds------------');
+    console.log(bounds);
+    console.log(bounds.viewSize.width * bounds.viewSize.percent / 100);
+    console.log(bounds.viewSize.height * bounds.viewSize.percent / 100);
     this._renderView.setBounds({
-      x: bounds.marginX,
-      y: bounds.marginY + bounds.menuHeight,
-      width: 375,
-      height: 667
+      x: bounds.viewSize.marginX + Math.floor(bounds.viewSize.width * (100 - bounds.viewSize.percent) / 200),
+      y: bounds.viewSize.marginY + bounds.menuHeight,
+      width: Math.floor(bounds.viewSize.width * bounds.viewSize.percent / 100),
+      height: Math.floor(bounds.viewSize.height * bounds.viewSize.percent / 100),
     })
   }
 
+  /**
+   *
+   * @param bounds
+   * @private
+   */
+  _updateBound(bounds) {
+    this._bounds = Object.assign({}, this._bounds, bounds);
+  }
 
+  /**
+   *
+   * @param deviceEmulation
+   * @private
+   */
+  _updateDeviceEmulation(deviceEmulation) {
+    this._deviceEmulation = Object.assign({}, this._deviceEmulation, deviceEmulation);
+  }
 
   /**
    * todo:
    * 更新 & 重新渲染
    */
   _optionsChange(options = {}, margin = {}) {
+    console.log(`--------renderMain & _optionsChange---------`);
+    let _viewSize = {};
+    let _deviceEmulation = {};
     console.log(options);
-    console.log(margin);
 
     //todo 根据options 调整 margin
     // this.renderConfig.margin
     //更新 配置数据
     if (options.percent) {
-      // this.renderConfig.bounds.percent = options.percent;
-
+      _viewSize.percent = options.percent;
     }
 
     if (options.dpr) {
-      // this.renderConfig.deviceEmulation.deviceScaleFactor = Math.floor(options.dpr)
+      _deviceEmulation.deviceScaleFactor = options.dpr;
     }
 
     if (options.width && options.height) {
+      _viewSize = {
+        width: options.width,
+        height: options.height
+      }
+      _deviceEmulation.screenSize = {
+        width: options.width,
+        height: options.height
+      };
+      _deviceEmulation.viewSize = {
+        width: options.width,
+        height: options.height
+      }
 
-      // this.renderConfig.bounds.width = options.width + this.renderConfig.margin.x;
-      //
-      // this.renderConfig.deviceEmulation.viewSize.width = this.renderConfig.deviceEmulation.screenSize.width = Math.floor(options.width);
-      // this.renderConfig.deviceEmulation.viewSize.height = this.renderConfig.deviceEmulation.screenSize.height = Math.floor(options.height);
+      this._updateDeviceEmulation(_deviceEmulation);
     }
 
+    this._updateBound({
+      viewSize: Object.assign({}, this._bounds.viewSize, _viewSize)
+    });
+    // this.setBounds();
+    this._setRenderViewBounds();
+    this._enableDeviceEmulation(this._renderView.webContents);
   }
 
   _preFixStyle() {
