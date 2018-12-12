@@ -59,6 +59,7 @@ module.exports = {
       },
       //dpr :2
       deviceScaleFactor: 2,
+      //fitToView: true,//没啥用
       //缩放 (默认 可以不配置)
       scale: 1
     },

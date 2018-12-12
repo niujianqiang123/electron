@@ -63,9 +63,10 @@ class Render {
     this.win.loadURL(pageUrl);
     this.setBounds();
     this._setContentSize();
-    this.win.webContents.openDevTools({
-      mode: 'detach'
-    })
+
+    // this.win.webContents.openDevTools({
+    //   mode: 'detach'
+    // })
   }
 
   /**
@@ -164,6 +165,7 @@ class Render {
     //更新 配置数据
     if (options.percent) {
       _viewSize.percent = Math.floor(options.percent);
+      _deviceEmulation.scale = options.percent / 100;
     }
 
     if (options.dpr) {
@@ -184,14 +186,15 @@ class Render {
         width: Math.floor(options.width) + this._bounds.viewSize.marginX * 2,
         // height: this._bounds.height
       });
-      this._updateDeviceEmulation(_deviceEmulation);
+
     }
 
     this._updateBound({
       viewSize: _viewSize,//Object.assign({}, this._bounds.viewSize, _viewSize)
     }, true);
-
     this._setRenderViewBounds();
+
+    this._updateDeviceEmulation(_deviceEmulation);
     this._enableDeviceEmulation(this._renderView.webContents);
   }
 
