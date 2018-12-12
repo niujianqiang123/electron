@@ -61,8 +61,7 @@ class Home {
 
 
   /**
-   * 创建render 子窗口（webView）
-   * todo: （暂时不考虑 多层 webView 的封装抽离）
+   * 创建render 子窗口（BrowserWindow 内嵌 webView）
    * 1、webView 内 require('electron') 报require error。API有限制
    * 2、webView 嵌套渲染 webView（for render box）& webview (for devTools box)时 renderView.getWebContents() 报错：undefined is not a function 即：API有限制
    */
