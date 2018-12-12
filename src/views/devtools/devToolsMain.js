@@ -1,6 +1,6 @@
 /**
  * Created by xiaogang on 2018/12/7.
- *
+ * todo: 私有属性 & 方法 改造！
  */
 "use strict";
 const path = require('path');
@@ -16,18 +16,20 @@ const pageUrl = `file://${path.join(__dirname, './devTools.html')}`; // 默认�
 
 class DevTools {
   constructor(params = {}) {
-    this.parentWin = params.parentWin || null;
+    //私有属性
+    this._parentWin = params.parentWin || null;
+    this._bounds = params.bounds;
+    //实例属性
     this.isShow = true;
-    this.bounds = params.bounds;
     this.win = null;
-    this.createWindow();
+    this._createWindow();
     this.setBounds();
   }
 
-  createWindow() {
+  _createWindow() {
     this.win = new BrowserWindow({
       title: "renderView devTool",
-      parent: this.parentWin,
+      parent: this._parentWin,
       resizable: false,
       center: false,
       show: this.isShow,
@@ -45,7 +47,7 @@ class DevTools {
   /**
    * 根据父窗口调整位置
    */
-  setBounds(bounds = this.bounds) {
+  setBounds(bounds = this._bounds) {
     // console.log(`--------devTools--setBounds----------`);
     // console.log(bounds);
     this.win.setBounds(bounds);
