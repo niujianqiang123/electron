@@ -1,195 +1,88 @@
 /**
- * Created by xiaogang on 2018/12/4.
- *
+ * created by homeRender on 2018/12/6
+ * 功能：渲染线程
  */
-"use strict";
-const path = require('path');
-const {app, ipcMain, BrowserWindow, BrowserView} = require('electron');
 
-//modules
-const {winConfig} = require('../../config/index');
-const {htmlScroll} = require('./injectCss');
+//base
+const {ipcRenderer} = require('electron');
 
-//pages
-const pageUrl = `file://${path.join(__dirname, './render.html')}`; // 默认相对于根目录
+//page
 
 
-class Render {
-  constructor(params = {}) {
-    console.log(`--new Render constructor--`);
-    console.log(params);
-    //定义 对象实例（new ClassName） 的属性
-    this.parentWin = params.parentWin || null;
-    this.title = params.title || 'render view';
-    this.pageUrl = params.pageUrl || pageUrl;
-    this.renderConfig = params.renderConfig || winConfig.render;
-    //跟随主窗口 没法设置默认值
-    this.bounds = params.bounds;
+window.onload = function (e) {
+  console.log(e);
+  initPageEvents();
+  selectsBoxChange();
+};
 
-    this.isShow = params.show || false;
-
-    this.win = null;
-    this.createWindow();
-    this.instanceEvents();
-  }
-
-
-  createWindow() {
-    this.win = new BrowserWindow({
-      title: this.title,
-      parent: this.parentWin,
-      resizable: false,
-      center: false,
-      show: this.isShow,
-      frame: false,
-      autoHideMenuBar: true,
-      webPreferences: {
-        javascript: true,
-        nodeIntegration: false,
-        webSecurity: false,
-      }
-    });
-
-
-    this.loadUrl(this.pageUrl, {forceLoad: true});
-    this.setBounds();
-    // this.win.webContents.openDevTools()
-  }
-
+/**
+ * 页面时间监听
+ */
+function initPageEvents() {
   /**
-   *  https://electronjs.org/docs/api/web-contents#contentsloadurlurl-options
-   * @param pUrl
-   * @param options={
-   *      @Boolean forceLoad //初始化时强制绕过
-   *      @String userAgent
-   * }
+   * select change
    */
-  loadUrl(pUrl = this.pageUrl, options = {forceLoad: false}) {
-    //update pageUrl
-    if (!options.forceLoad && pUrl === this.pageUrl) {
-      return;
-    }
-    this.pageUrl = pUrl
-    this.preFixStyle();
-    this.win.loadURL(pUrl, {
-      httpReferrer: options.httpReferrer,//'https://electronjs.org'
-      userAgent: options.userAgent
+  document.querySelectorAll('select').forEach(item => {
+    item.addEventListener('change', function (e) {
+      console.log(e);
+      selectsBoxChange(e && e.target);
+    });
+  })
+
+}
+
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+
+function selectsBoxChange(target) {
+  let _options = {};
+  if (target) {
+    _setSelect(target)
+  } else {
+    //遍历 selects
+    $('selectsBox').querySelectorAll('select').forEach(item => {
+      _setSelect(item)
     });
   }
+  console.log(`------ homeRender---selectsBoxChange-----`);
+  console.log(_options);
+
+  renderChange(_options)
 
   /**
-   * https://github.com/electron/electron/issues/4099
-   * You should call enableDeviceEmulation after the page gets loaded.
-   * @param params
+   * 获取 select 信息
+   * @param target
+   * @private
    */
-  enableDeviceEmulation(params = this.renderConfig.deviceEmulation) {
-    console.log(params);
-    this.win.webContents.enableDeviceEmulation(params)
-  }
+  function _setSelect(target) {
+    let _id = target.id;
+    let _text = target.options[target.selectedIndex || 0].text;
+    let _value = target.value.split('*');
+    // console.log(`${_text}_${_value}`);
+    // console.log(item.previousElementSibling);
+    //show text
+    target.previousElementSibling.innerText = _text.replace(/\(.+?\)/g, '');
 
-  /**
-   * 开启 devTools
-   * @param webContents
-   */
-  setDevToolsWebContents(webContents) {
-    this.win.webContents.setDevToolsWebContents(webContents)
-
-    // Open the DevTools.
-    this.win.webContents.openDevTools({mode: 'detach'})
-  }
-
-  /**
-   *
-   * @param bounds
-   */
-  updateBound(bounds) {
-    this.bounds = bounds;
-  }
-
-  /**
-   * 根据父窗口调整位置
-   *
-   */
-  setBounds(bounds = this.bounds, margin = this.renderConfig.margin, screenSize = this.renderConfig.deviceEmulation.screenSize) {
-    let _width = bounds.width - 2 * margin.x;
-    let _height = bounds.height - 1.5 * margin.y;//Math.round(_width * (screenSize.height / screenSize.width));
-    let _bounds = {
-      x: bounds.x + margin.x,
-      y: bounds.y + margin.y,
-      width: _width,
-      height: _height
+    // set _options
+    if (_id === 'phoneType') {
+      _options.width = _value[0];
+      _options.height = _value[1];
+      _options.dpr = _value[2];
+    } else if (_id === 'percent') {
+      _options.percent = _value[0];
+    } else {
+      _options.network = _value[0]
     }
-    // console.log(`--------render--setBounds----------`);
-    // console.log(_bounds);
-    //保存数据 & 同时更新渲染
-    this.win.setBounds(_bounds, true);
-    this.updateBound(bounds);
-  }
-
-  /**
-   * todo:
-   * 更新 & 重新渲染
-   */
-  optionsChange(options = {}, margin = this.renderConfig.margin) {
-    console.log(options);
-    console.log(margin);
-
-    //todo 根据options 调整 margin
-    // this.renderConfig.margin
-    //更新 配置数据
-    if (options.percent) {
-      this.renderConfig.bounds.percent = options.percent;
-
-    }
-
-    if (options.dpr) {
-      this.renderConfig.deviceEmulation.deviceScaleFactor = Math.floor(options.dpr)
-    }
-
-    if (options.width && options.height) {
-
-      // this.renderConfig.bounds.width = options.width + this.renderConfig.margin.x;
-      //
-      // this.renderConfig.deviceEmulation.viewSize.width = this.renderConfig.deviceEmulation.screenSize.width = Math.floor(options.width);
-      // this.renderConfig.deviceEmulation.viewSize.height = this.renderConfig.deviceEmulation.screenSize.height = Math.floor(options.height);
-    }
-
-    // let _bounds = {
-    //   x: this.bounds.x + margin.x,
-    //   y: this.bounds.y + margin.y,
-    //   width: options.width - 2 * margin.x,
-    //   height: options.height - 1.5 * margin.y
-    // }
-    //
-    // console.log(_bounds);
-    // this.win.setBounds(_bounds, true);
-  }
-
-  preFixStyle() {
-    // this.win.webContents.insertCSS(htmlScroll);
-
-  }
-
-  /**
-   * 实例事件
-   */
-  instanceEvents() {
-    this.win.webContents.on('dom-ready', (e) => {
-      this.preFixStyle();
-    });
-
-    this.win.webContents.on('did-finish-load', (e) => {
-      this.enableDeviceEmulation();
-    });
-  }
-
-  show() {
-    this.win.once('ready-to-show', () => {
-      this.win.show();
-      this.win.focus();
-      this.isShow = true;
-    });
   }
 }
 
-module.exports = Render;
+/**
+ *
+ */
+function renderChange(options) {
+  ipcRenderer.send('render-select-options', options);
+}
+

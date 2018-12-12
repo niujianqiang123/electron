@@ -1,29 +1,47 @@
 /**
- * Created by xiaogang on 2018/12/4.
+ * Created by xiaogang on 2018/12/3.
  *
  */
-@import "../../less/export";
 
 .page-render {
-  font-family: "Microsoft YaHei", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
-  font-size: 13px;
-  line-height: 18px;
-  color: #737373;
-  background-color: #fff;
-  margin: 50px 30px 0;
+  background: #eee;
 
-  .header {
-    margin: 30px 0;
-    font-weight: 400;
-    text-align: center;
-    color: #404040;
-    line-height: 36px;
-
-    font-size: 24px;
-  }
+  //content
   .contents {
-    p{
-      margin-bottom: 12px;
+    overflow: hidden;
+    .selectsBox {
+      @border: 1px solid #ccc;
+      overflow: hidden;
+      border-bottom: @border;
+      border-top: @border;
+
+      @select-height: 25px;
+      .pre-select {
+        position: relative;
+        float: left;
+        max-width: 110px;
+        width: 30%;
+        height: @select-height;
+        line-height: @select-height;
+
+        .select-header {
+          position: absolute;
+          width: 100%;
+          text-indent: 6px;
+          border-right: @border;
+        }
+      }
+
+      .select, select {
+        height: @select-height;
+        border: none;
+        width: 100%;
+        opacity: 0;
+        appearance: none;
+      }
     }
+
   }
+
 }
+

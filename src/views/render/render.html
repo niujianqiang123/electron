@@ -3,27 +3,52 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>render created by xiaogang on 2018/12/4</title>
+  <title>devTools render</title>
+  <link type="text/css" rel="stylesheet" href="../../common/common.css"/>
   <link type="text/css" rel="stylesheet" href="./render.css"/>
-  <style type="text/css">
-
-  </style>
 </head>
 <body>
 <div class="dev-page page-render">
 
-  <div class="header">
-    <p>devTools 开发者工具</p>
-  </div>
   <div class="contents">
-    <p>欢迎使用 devTools 开发者工具</p>
-    <p>通过该工具，你可以更加便捷的调试 APP 上的网页：</p>
-    <p>1. 你可以使用自己的 APP账号 来调试需要授权的网页;</p>
-    <p>2. 你可以调试、检验页面的 JS-SDK 相关功能与权限，模拟大部分 SDK 的输入和输出;</p>
-    <p>3. 你可以利用集成的 Chrome DevTools 协助开发。</p>
+    <div class="selectsBox" id="selectsBox">
+
+      <div class="pre-select">
+        <p class="select-header pre-ellipsis">-</p>
+        <select class="select" id="phoneType">
+          <option class="option" value="393*786*2.75">mi mix 2 (393*786 | Dpr:2.75)</option>
+          <option class="option" value="320*568*2">iphone 5 (320*568 | Dpr:2)</option>
+          <option class="option" value="375*667*2" selected>iphone 6 (375*667 | Dpr:2)</option>
+          <option class="option" value="414*736*3">iphone 6 Plus (414*736 | Dpr:3)</option>
+        </select>
+      </div>
+
+      <div class="pre-select">
+        <p class="select-header pre-ellipsis">-</p>
+        <select class="select" id="percent">
+          <option class="option" value="100">100%</option>
+          <option class="option" value="85">85%</option>
+          <option class="option" value="75" selected>75%</option>
+          <option class="option" value="50">50%</option>
+        </select>
+      </div>
+
+      <div class="pre-select">
+        <p class="select-header pre-ellipsis">-</p>
+        <select class="select" id="network">
+          <option class="option" value="wifi" selected>WIFI</option>
+          <option class="option" value="2G">2G</option>
+          <option class="option" value="3G">3G</option>
+          <option class="option" value="4G">4G</option>
+          <option class="option" value="5G">5G</option>
+          <option class="option" value="Offline">Offline</option>
+        </select>
+      </div>
+
+    </div>
   </div>
 
 </div>
 </body>
-<script type="text/javascript" src="./devTools.js"></script>
+<script type="text/javascript" src="render.js"></script>
 </html>
