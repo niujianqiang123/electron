@@ -12,6 +12,7 @@ const {ipcRenderer} = require('electron');
 window.onload = function (e) {
   console.log(e);
   initPageEvents();
+  ipcRendererEvents();
   selectsBoxChange();
 };
 
@@ -27,10 +28,32 @@ function initPageEvents() {
       console.log(e);
       selectsBoxChange(e && e.target);
     });
-  })
+  });
+
+  /**
+   * todo
+   * 1、防抖动处理
+   * 2、scrollTop 浏览器兼容处理
+   * @param e
+   */
+  document.body.onscroll = (e) => {
+    console.log(document.documentElement.scrollTop)
+    ipcRenderer.send('render-window-scroll', document.documentElement.scrollTop)
+  }
+
 
 }
 
+/**
+ *
+ */
+function ipcRendererEvents() {
+  //
+  ipcRenderer.on('renderMain-update-contentHeight', (e, bounds) => {
+    console.log(bounds);
+    document.body.style.minHeight = `${bounds.contentHeight}px`;
+  })
+}
 
 function $(id) {
   return document.getElementById(id);

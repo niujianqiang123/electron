@@ -20,11 +20,14 @@
 - [x] 自定义展示 devTools 的功能区域
 - [ ] 类 方法&属性私有化的处理 待优化 \[暂时 **_标识** & 同时不要去直接调用私有化的方法和属性，避免后续改造完影响正常使用] 
 - [x] select 小于 100% 时显示bug!
-- [ ] renderWindow 中 contentHeight 设置问题！
-- [ ] renderWindow 滚动事件监听
-### 语法（todo）
+- [x] renderWindow 中 contentHeight 设置问题！
+- [x] renderWindow 滚动事件监听
+- [ ] 三个抖动 性能优化
+- [ ] BrowserView 被遮挡问题
+
+### 语法
 - [ ] export default  class Main {
 - [ ] func=()=>{}
 
 ### bugs
-- [ ] setDevToolsWebContents ：一片空白。亟待解决
+- [x] setDevToolsWebContents ：一片空白。亟待解决

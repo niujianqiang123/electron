@@ -17,8 +17,8 @@ const viewUrl = `file://${path.join(__dirname, './view.html')}`; // 默认相对
 
 class Render {
   constructor(params = {}) {
-    console.log(`--new Render constructor--`);
-    console.log(params);
+    // console.log(`--new Render constructor--`);
+    // console.log(params);
     //私有属性
     this._homeWin = params.homeWin;
     this._parentWin = params.parentWin || null;
@@ -99,11 +99,13 @@ class Render {
 
   /**
    * todo: 设置无效！
+   * 设置 renderHtml 内容高度
    * @private
    */
   _setContentSize() {
-    console.log(this._bounds.viewSize.contentHeight);
-    this.win.setContentSize(this._bounds.viewSize.width, this._bounds.viewSize.contentHeight, true);
+    console.log('------------renderMain && _setContentSize------------');
+    console.log(this._bounds);
+    this.win.send('renderMain-update-contentHeight', this._bounds);
   }
 
   /**
@@ -111,12 +113,12 @@ class Render {
    */
   _setRenderViewBounds(bounds = this._bounds) {
     console.log('------------renderMain && setRenderViewBounds------------');
-    console.log(bounds);
-    console.log(bounds.viewSize.width * bounds.viewSize.percent / 100);
-    console.log(bounds.viewSize.height * bounds.viewSize.percent / 100);
+    // console.log(bounds);
+    // console.log(bounds.viewSize.width * bounds.viewSize.percent / 100);
+    // console.log(bounds.viewSize.height * bounds.viewSize.percent / 100);
     this._renderView.setBounds({
       x: bounds.viewSize.marginX + Math.floor(bounds.viewSize.width * (100 - bounds.viewSize.percent) / 200),
-      y: bounds.viewSize.marginY + bounds.menuHeight,
+      y: bounds.viewSize.marginY + bounds.menuHeight - bounds.viewSize.scrollTop,
       width: Math.floor(bounds.viewSize.width * bounds.viewSize.percent / 100),
       height: Math.floor(bounds.viewSize.height * bounds.viewSize.percent / 100),
     })
@@ -129,10 +131,17 @@ class Render {
    * @private
    */
   _updateBound(bounds, updateParent = false) {
+    console.log(`-----------renderMain---_updateBound-----------`);
+    console.log(this._bounds);
+    console.log(bounds);
     //优化浅拷贝 对象的 bug
     if (bounds.viewSize) {
-      let _viewSize = Object.assign({}, this._bounds.viewSize, bounds.viewSize);
-      this._bounds = Object.assign({}, this._bounds, bounds, {viewSize: _viewSize});
+      let _viewSize = Object.assign({}, this._bounds.viewSize, {scrollTop: 0}, bounds.viewSize);
+      console.log(_viewSize);
+      this._bounds = Object.assign({}, this._bounds, bounds, {
+        viewSize: _viewSize,
+        contentHeight: (bounds.menuHeight || this._bounds.menuHeight) + 2 * _viewSize.marginY + _viewSize.height * _viewSize.percent / 100
+      });
     } else {
       this._bounds = Object.assign({}, this._bounds, bounds);
     }
@@ -196,6 +205,8 @@ class Render {
 
     this._updateDeviceEmulation(_deviceEmulation);
     this._enableDeviceEmulation(this._renderView.webContents);
+
+    this._setContentSize();
   }
 
   _preFixStyle() {
@@ -236,6 +247,18 @@ class Render {
   _ipcEvents() {
     ipcMain.on('render-select-options', (event, options) => {
       this._optionsChange(options);
+    });
+
+    ipcMain.on('render-window-scroll', (e, scrollTop = 0) => {
+      if (scrollTop <= 0 && this._bounds.contentHeight - this._bounds.height < scrollTop) {
+        return;
+      }
+      this._updateBound({
+        viewSize: {
+          scrollTop: Math.floor(scrollTop),
+        }
+      });
+      this._setRenderViewBounds();
     });
   }
 
@@ -290,6 +313,9 @@ class Render {
     })
   }
 
+  /**
+   *
+   */
   show() {
     this.win.once('ready-to-show', () => {
       this.win.show();

@@ -142,8 +142,8 @@ class Home {
    */
   _updateChildBounds(fromChild) {
     let _newContentBounds = this._getContentBounds();
-    console.log(`-------homeMain--_updateChildBounds------`);
-    console.log(_newContentBounds);
+    // console.log(`-------homeMain--_updateChildBounds------`);
+    // console.log(_newContentBounds);
     !fromChild && this._renderWin && this._renderWin.setBounds(_newContentBounds.render);
     this._devToolsWin && this._devToolsWin.setBounds(_newContentBounds.devTools);
   }

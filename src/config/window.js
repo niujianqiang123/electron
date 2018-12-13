@@ -20,12 +20,14 @@ module.exports = {
     bounds: {
       // render 下拉选择菜单 区域高度
       menuHeight: 25,
+      // x: 0,
+      // y: 0,
       //render 宽高&内容高度 （内容宽度强制 自适应展开）
       width: 375 + 30 * 2,//自适应设置 viewWidth + 2 * marginX
       height: 800,//自适应设置 exports.home.bounds.height - exports.home.headerHeight
+      contentHeight: 25 + 20 * 2 + 667 * 75 / 100,//自适应设置 menuHeight + 2 * marginY + viewHeight
       //deviceEmulation 物理宽高：view.bounds = deviceEmulation * percent
       viewSize: {
-        contentHeight: 25 + 20 * 2 + 667,//自适应设置 menuHeight + 2 * marginY + viewHeight
         width: 375,
         height: 667,
         //缩放 百分比
@@ -33,6 +35,8 @@ module.exports = {
         //左右边界（100%比例下）
         marginX: 30,
         marginY: 20,
+        //
+        scrollTop: 0
       },
 
     },
