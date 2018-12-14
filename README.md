@@ -12,7 +12,12 @@
 > 
 > 调试 **\[类似微信开发者工具小程序模式\]** ：采用google开源的 **devtools** 代理客户端和服务端,连接真机和客户端间的断点和其他常见调试！ 
 
+## uses
+- npm install --save-dev
+- npm run start
 
+> 效果
+ ![devTools](./assets/readme/devTools.png)
 
 ## todo
 - [x] 窗口布局：let view = new BrowserView({})
@@ -24,10 +29,12 @@
 - [x] renderWindow 滚动事件监听
 - [ ] 三个抖动 性能优化
 - [ ] BrowserView 被遮挡问题
+- [ ] 打包输出 package 
+- [ ] mac 适配
 
-### 语法
+## 语法
 - [ ] export default  class Main {
 - [ ] func=()=>{}
 
-### bugs
+## bugs
 - [x] setDevToolsWebContents ：一片空白。亟待解决
