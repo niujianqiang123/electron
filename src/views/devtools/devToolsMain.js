@@ -53,6 +53,11 @@ class DevTools {
     this.win.setBounds(bounds);
   }
 
+  close() {
+    this._parentWin = null;
+    this.win.destroy();
+  }
+
   show() {
     this.win.show();
     this.win.focus();

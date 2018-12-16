@@ -133,6 +133,10 @@ class Home {
     this.homeWin.on('resize', (e) => {
       this._updateChildBounds();
     });
+
+    // this.homeWin.on('close', (e) => {
+    //   this.close();
+    // })
   }
 
   /**
@@ -204,6 +208,15 @@ class Home {
     renderUrl && this._renderWin.loadUrl(this._renderUrl);
   }
 
+  close() {
+    console.log(`-----------homeMain-close--------`);
+    this._renderWin.close();
+    this._devToolsWin.close();
+    //销毁自己实例
+    this._renderWin = null;
+    this._devToolsWin = null;
+    this.homeWin.destroy();
+  }
 
   /**
    * 主窗口实例显示

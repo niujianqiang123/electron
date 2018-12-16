@@ -29,8 +29,9 @@
 - [x] renderWindow 滚动事件监听
 - [ ] 三个抖动 性能优化
 - [ ] BrowserView 被遮挡问题
-- [ ] 打包输出 package 
+- [x] 打包输出 package 
 - [ ] mac 适配
+- [ ] 退出杀掉系统进程
 
 ## 语法
 - [ ] export default  class Main {

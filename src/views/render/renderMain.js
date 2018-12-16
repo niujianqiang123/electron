@@ -319,6 +319,12 @@ class Render {
     })
   }
 
+  close() {
+    this._parentWin = null;
+    this._renderView.destroy();
+    this.win.destroy();
+  }
+
   /**
    *
    */
