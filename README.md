@@ -38,3 +38,9 @@
 
 ## bugs
 - [x] setDevToolsWebContents ：一片空白。亟待解决
+
+## download
+> windows 
+- https://uiorpm.github.io/electron/out/Electron%20DevTools-win32-ia32.rar
+- https://github.com/UIorPM/electron/releases/download/0.0.1/Electron.DevTools-win32-ia32.rar
+- https://github.com/UIorPM/electron/blob/master/out/Electron%20DevTools-win32-ia32.rar
