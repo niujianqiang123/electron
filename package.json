@@ -2,10 +2,13 @@
   "name": "electron_ui_pm",
   "version": "0.0.1",
   "main": "src/app.js",
+  "productName": "Electron DevTools",
   "scripts": {
     "start": "electron . --debug --enable-logging",
     "debug": "electron --inspect=5858",
-    "package:win": "electron-packager . --overwrite --platform=win32 --arch=ia32 --out=out --icon=assets/app-icon/win/app.ico"
+    "package:win": ".\\scripts\\build-win32.bat win32 ia32",
+    "package:win32": ".\\scripts\\build-win32.bat win32 ia32",
+    "package:win64": ".\\scripts\\build-win32.bat win32 x64"
   },
   "dependencies": {},
   "devDependencies": {
