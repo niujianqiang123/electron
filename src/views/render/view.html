@@ -6,6 +6,21 @@
   <title>devTools view</title>
   <link type="text/css" rel="stylesheet" href="../../common/common.css"/>
   <link type="text/css" rel="stylesheet" href="./view.css"/>
+  <style type="text/css">
+    pre {
+      overflow: scroll;
+      padding: 5px 10px;
+      margin: 0 !important;
+    }
+
+    .tips .title {
+      text-align: center;
+      line-height: 20px;
+      color: #333;
+      font-weight: bold;
+    }
+
+  </style>
 </head>
 <body>
 <div class="dev-page page-view">
@@ -21,6 +36,39 @@
     <p>3. 你可以利用集成的 Chrome DevTools 协助开发。</p>
   </div>
 
+  <div class="tips">
+    <p class="title">插件</p>
+    <pre>
+  /**
+   * 客户端插件功能模拟
+   * 当然实际项目中一般都会进行统一封装，简化调用
+   * eg:yourModules.pluginClass.func(params){
+   *    //do something
+   * }
+   */
+  cordova.exec(function (data) {
+    console.log(`success callback:${JSON.stringify(data)}`);
+  }, function (err) {
+    console.log(`error callback:${JSON.stringify(err)}`);
+  }, 'pluginsBars', 'initTitle', ['title']);
+    </pre>
+  </div>
+
 </div>
+<script type="text/javascript">
+  /**
+   * 客户端插件功能模拟
+   * 当然实际项目中一般都会进行统一封装，简化调用
+   * eg:yourModules.pluginClass.func(params){
+   *    //do something
+   * }
+   */
+  cordova.exec(function (data) {
+    console.log(`success callback:${JSON.stringify(data)}`);
+  }, function (err) {
+    console.log(`error callback:${JSON.stringify(err)}`);
+  }, 'pluginsBars', 'initTitle', ['title']);
+
+</script>
 </body>
 </html>

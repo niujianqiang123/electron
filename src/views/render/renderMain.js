@@ -9,6 +9,7 @@ const {app, ipcMain, BrowserWindow, BrowserView} = require('electron');
 //modules
 const {winConfig} = require('../../config/index');
 const {htmlScroll} = require('./injectCss');
+const cordova = `${path.join(__dirname, '../../appModules/cordova.js')}`;
 
 //pages
 const pageUrl = `file://${path.join(__dirname, './render.html')}`; // 默认相对于根目录
@@ -73,7 +74,12 @@ class Render {
    * for deviceEmulation render
    */
   _createRenderView(params = {}) {
-    this._renderView = new BrowserView(params);
+    let _params = Object.assign({}, params, {
+      webPreferences: {
+        preload: cordova,
+      }
+    });
+    this._renderView = new BrowserView(_params);
     this.loadUrl(this._viewUrl, {forceLoad: true});
     this._setBrowserView();
     this._setRenderViewBounds();
