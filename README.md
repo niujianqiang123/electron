@@ -3,16 +3,21 @@
 
 
 ## 解决的问题
-- 部署到第三方的代码调试！
+- 部署到第三方APP的代码调试！
 
-- 第三方部署到云闪付APP！
+- 第三方服务接入到APP的调试！
 > 客户端 **\[类似微信开发者工具公众号模式\]** ：采用 **electronjs** 构建跨平台应用。集成浏览器内核 & 客户端插件，构建基本的模拟运行环境！
 > 
 > 服务：采用扫码验证之后，自动构建一个本地或者公网 **服务** 。客户端临时访问该服务！
 > 
 > 调试 **\[类似微信开发者工具小程序模式\]** ：采用google开源的 **devtools** 代理客户端和服务端,连接真机和客户端间的断点和其他常见调试！ 
 
+## uses
+- npm install --save-dev
+- npm run start
 
+> 效果
+ ![devTools](./assets/readme/devTools.png)
 
 ## todo
 - [x] 窗口布局：let view = new BrowserView({})
@@ -24,10 +29,12 @@
 - [x] renderWindow 滚动事件监听
 - [ ] 三个抖动 性能优化
 - [ ] BrowserView 被遮挡问题
+- [ ] 打包输出 package 
+- [ ] mac 适配
 
-### 语法
+## 语法
 - [ ] export default  class Main {
 - [ ] func=()=>{}
 
-### bugs
+## bugs
 - [x] setDevToolsWebContents ：一片空白。亟待解决
