@@ -41,6 +41,10 @@
 
 ## download
 > windows 
+### v 0.0.1
 - https://uiorpm.github.io/electron/out/Electron%20DevTools-win32-ia32.rar
 - https://github.com/UIorPM/electron/releases/download/0.0.1/Electron.DevTools-win32-ia32.rar
 - https://github.com/UIorPM/electron/blob/master/out/Electron%20DevTools-win32-ia32.rar
+### v 0.0.1
+- https://uiorpm.github.io/electron/out/Electron_DevTools-win_0.0.2.rar
+- https://github.com/UIorPM/electron/blob/master/out/Electron_DevTools-win_0.0.2.rar
