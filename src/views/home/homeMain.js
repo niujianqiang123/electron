@@ -112,6 +112,9 @@ class Home {
     ipcMain.on('home-updateRenderUrl', (event, _inputValue) => {
       this.updateRenderUrl(_inputValue);
     });
+    ipcMain.on('home-refresh', (event) => {
+      this.reload();
+    });
 
   }
 
@@ -207,6 +210,10 @@ class Home {
   updateRenderUrl(renderUrl = this._renderUrl) {
     this._renderUrl = renderUrl;
     renderUrl && this._renderWin.loadUrl(this._renderUrl);
+  }
+
+  reload() {
+    this._renderUrl && this._renderWin.loadUrl(this._renderUrl, {forceLoad: true});
   }
 
   close() {

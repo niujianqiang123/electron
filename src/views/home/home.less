@@ -11,7 +11,9 @@
     height: @header-height;
     .inputBox {
       padding-top: 35px;
+      @input-height: 30px;
       form {
+        position: relative;
         background: #fff;
         border: 1px solid #c7c7c7;
         font-size: 14px;
@@ -22,7 +24,17 @@
       input {
         text-indent: 8px;
         width: 100%;
-        line-height: 30px;
+        line-height: @input-height;
+      }
+
+      .refresh {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: @input-height;
+        height: @input-height;
+        background: url("../../image/common/refresh.svg") no-repeat center center;
+        background-size: 66%;
       }
     }
     .toggleDevTools {

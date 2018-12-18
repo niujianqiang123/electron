@@ -26,6 +26,10 @@ function initPageEvents() {
     ipcRenderer.send('home-toggle-devTools')
   });
 
+  $('refresh').addEventListener('click', (e) => {
+    ipcRenderer.send('home-refresh');
+  });
+
   /**
    * input
    */

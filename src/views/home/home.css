@@ -13,6 +13,7 @@
   padding-top: 35px;
 }
 .page-home .header .inputBox form {
+  position: relative;
   background: #fff;
   border: 1px solid #c7c7c7;
   font-size: 14px;
@@ -23,6 +24,15 @@
   text-indent: 8px;
   width: 100%;
   line-height: 30px;
+}
+.page-home .header .inputBox .refresh {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 30px;
+  background: url("../../image/common/refresh.svg") no-repeat center center;
+  background-size: 66%;
 }
 .page-home .header .toggleDevTools {
   position: absolute;
