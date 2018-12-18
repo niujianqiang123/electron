@@ -9,6 +9,7 @@ const path = require('path');
 const {app, ipcMain, BrowserWindow, BrowserView, dialog} = require('electron');
 
 //modules
+const util = require('../../util/util');
 const {common, winConfig} = require('../../config/index');
 const RenderWindow = require('../render/renderMain');
 const DevToolsWindow = require('../devtools/devToolsMain');
@@ -122,17 +123,17 @@ class Home {
      * todo: 加入去抖动函数
      * tips:打开任务管理器，移动时: cpu 占用瞬间飙升
      */
-    this.homeWin.on('move', (e) => {
+    this.homeWin.on('move', util.throttle((e) => {
       this._updateChildBounds();
-    });
+    }, 50));
 
     /**
      * todo: 加入去抖动函数
      * tips:打开任务管理器，移动时: cpu 占用瞬间飙升
      */
-    this.homeWin.on('resize', (e) => {
+    this.homeWin.on('resize', util.debounce((e) => {
       this._updateChildBounds();
-    });
+    }, 150));
 
     // this.homeWin.on('close', (e) => {
     //   this.close();

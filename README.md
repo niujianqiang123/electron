@@ -27,7 +27,7 @@
 - [x] select 小于 100% 时显示bug!
 - [x] renderWindow 中 contentHeight 设置问题！
 - [x] renderWindow 滚动事件监听
-- [ ] 三个抖动 性能优化
+- [x] 三个抖动 性能优化(简化版实现)
 - [ ] BrowserView 被遮挡问题
 - [x] 打包输出 package 
 - [ ] mac 适配

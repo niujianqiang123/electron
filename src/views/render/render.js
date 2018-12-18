@@ -5,7 +5,7 @@
 
 //base
 const {ipcRenderer} = require('electron');
-
+const util = require('../../util/util');
 //page
 
 
@@ -36,10 +36,10 @@ function initPageEvents() {
    * 2、scrollTop 浏览器兼容处理
    * @param e
    */
-  document.body.onscroll = (e) => {
-    console.log(document.documentElement.scrollTop)
+  document.body.onscroll = util.debounce((e) => {
+    console.log(document.documentElement.scrollTop);
     ipcRenderer.send('render-window-scroll', document.documentElement.scrollTop)
-  }
+  }, 150)
 
 
 }
