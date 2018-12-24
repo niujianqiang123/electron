@@ -12,6 +12,29 @@
 > 
 > 调试 **\[类似微信开发者工具小程序模式\]** ：采用google开源的 **devtools** 代理客户端和服务端,连接真机和客户端间的断点和其他常见调试！ 
 
+## 进度
+- 客户端 版本核心功能基本完成！
+> 1、插件功能实现，更多模拟功能待丰富！
+
+- 服务
+> 相对容易！
+
+- 调试
+> 方案一：
+```bat
+http://web.jobbole.com/84281/  
+
+不知道客户端支持像pc端这样 带参数的打开浏览器（你们可能是手机浏览器内核啥的）渲染页面吗？
+$ start "" "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe" --args --remote-debugging-port=9222 
+
+相当于PC端起了一个服务，供远程查看激活的页面！（这样实现的工作量最小）
+```
+> 方案二：
+```bat
+待定暂无思路！
+```
+
+
 ## uses
 - npm install --save-dev
 - npm run start
