@@ -64,11 +64,16 @@ $ start "" "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe" --args 
 - [x] setDevToolsWebContents ：一片空白。亟待解决
 
 ## download
-> windows 
+> npm run package:win32
+
+> windows package
 ### v 0.0.1
 - https://uiorpm.github.io/electron/out/Electron%20DevTools-win32-ia32.rar
 - https://github.com/UIorPM/electron/releases/download/0.0.1/Electron.DevTools-win32-ia32.rar
 - https://github.com/UIorPM/electron/blob/master/out/Electron%20DevTools-win32-ia32.rar
-### v 0.0.1
+### v 0.0.2
 - https://uiorpm.github.io/electron/out/Electron_DevTools-win_0.0.2.rar
 - https://github.com/UIorPM/electron/blob/master/out/Electron_DevTools-win_0.0.2.rar
+### v 0.0.3
+- https://uiorpm.github.io/electron/out/Electron_DevTools-win32_0.0.3.rar
+- https://github.com/UIorPM/electron/blob/master/out/Electron_DevTools-win32_0.0.3.rar
